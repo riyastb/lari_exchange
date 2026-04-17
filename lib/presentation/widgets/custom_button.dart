@@ -4,6 +4,9 @@ import 'package:lari_exchange/core/app_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
+
+
+    
     super.key,
     required this.label,
     this.onPressed,
