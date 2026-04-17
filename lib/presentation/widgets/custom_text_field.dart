@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 
-/// Outlined text field with light fill, optional leading icon, and password visibility.
+
 class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,

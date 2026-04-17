@@ -17,7 +17,7 @@ class LoginController {
     return null;
   }
 
-  /// Returns true if the form is valid and login may proceed.
+
   bool validate() => formKey.currentState?.validate() ?? false;
 
   String get username => usernameController.text.trim();
@@ -89,7 +89,7 @@ class LoginController {
 
       if (!context.mounted) return;
       if (ok) {
-        // TODO: complete sign-in (e.g. unlock stored refresh token)
+    
       }
     } on PlatformException catch (e) {
       if (context.mounted) {

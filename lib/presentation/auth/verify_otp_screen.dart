@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_icons.dart';
+import 'package:lari_exchange/core/app_router.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 import 'package:lari_exchange/presentation/widgets/custom_button.dart';
 import 'package:pinput/pinput.dart';
@@ -94,7 +95,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   void _onVerify() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: submit OTP to API, then go to home
+      context.go(AppRoutePaths.home);
     }
   }
 
@@ -161,7 +162,11 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
       children: [
         canResend
             ? Row(
-                children: [Text('Didn\'t receive the code?  ',style:AppTextStyles.body() ,),
+                children: [
+                  Text(
+                    'Didn\'t receive the code?  ',
+                    style: AppTextStyles.body(),
+                  ),
                   TextButton.icon(
                     onPressed: _onResendOtp,
                     icon: Icon(Icons.refresh_rounded, size: 18, color: korange),
@@ -203,7 +208,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   ),
                 ],
               ),
-    ],
+      ],
     );
   }
 

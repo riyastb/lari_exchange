@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:lari_exchange/core/app_colors.dart';
+import 'package:lari_exchange/core/app_text_styles.dart';
+
+class CustomSearchField extends StatelessWidget {
+  final TextEditingController controller;
+  final VoidCallback? onTap;
+  final Function(String)? onChanged;
+
+  const CustomSearchField({
+    super.key,
+    required this.controller,
+    this.onTap,
+    this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      height: 49,
+      width: size.width*0.78,
+      decoration: BoxDecoration(
+        color: Colors.white70,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08), // very light shadow
+            blurRadius: 12, // smooth blur
+            spreadRadius: 1, // slight spread
+            offset: const Offset(0, 4), // soft downward shadow
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        onTap: onTap,
+        onChanged: onChanged,
+        textAlignVertical: TextAlignVertical.center,
+        style: AppTextStyles.body(),
+        decoration: InputDecoration(
+          hintText: "Pay by name or ID Number",
+          hintStyle: AppTextStyles.body(),
+          border: InputBorder.none,
+          isDense: true,
+          contentPadding: const EdgeInsets.only(right: 12),
+          // prefixIconConstraints: const BoxConstraints(
+          //   minWidth: 44,
+          //   minHeight: 44,
+          //   maxHeight: 49,
+          // ),
+          prefixIcon: const Icon(Icons.search, color: kblack),
+        ),
+      ),
+    );
+  }
+}

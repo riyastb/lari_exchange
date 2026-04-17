@@ -24,6 +24,25 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: colorScheme,
         textTheme: AppTextStyles.textTheme(colorScheme),
+        navigationBarTheme: NavigationBarThemeData(
+          height: 72,
+          labelTextStyle: WidgetStateProperty.resolveWith((states) {
+            final base = ThemeData(
+              colorScheme: colorScheme,
+              useMaterial3: true,
+            ).textTheme.labelMedium;
+            return base?.copyWith(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            );
+          }),
+          iconTheme: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return IconThemeData(color: colorScheme.primary, size: 24);
+            }
+            return IconThemeData(color: colorScheme.onSurfaceVariant, size: 24);
+          }),
+        ),
       ),
     );
   }
