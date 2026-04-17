@@ -49,7 +49,7 @@ class CustomSearchField extends StatelessWidget {
           //   minHeight: 44,
           //   maxHeight: 49,
           // ),
-          prefixIcon: const Icon(Icons.search, color: kblack),
+          prefixIcon: const Icon(Icons.search, color: kblack,size: 20,),
         ),
       ),
     );
