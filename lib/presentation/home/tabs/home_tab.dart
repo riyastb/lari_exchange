@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
-import 'package:lari_exchange/core/app_text_styles.dart';
 import 'package:lari_exchange/presentation/home/widgets/google_pay_style_app_bar.dart';
 import 'package:lari_exchange/presentation/widgets/custom_icon_tile.dart';
 import 'package:lari_exchange/presentation/widgets/custom_beneficiary_card.dart';
 import 'package:lari_exchange/presentation/widgets/custom_pill_row.dart';
+import 'package:lari_exchange/presentation/widgets/custom_circle_icon_tile.dart';
+import 'package:lari_exchange/presentation/widgets/custom_section_header.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -19,7 +19,7 @@ class HomeTab extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
+                  horizontal: 24,
                   vertical: 8,
                 ),
                 child: Row(
@@ -82,62 +82,181 @@ class HomeTab extends StatelessWidget {
                           label: 'Check your Balance',
                         ),
                         kWidth10,
+                          const CustomPillRow(
+                          icon: Icons.calculate_outlined,
+                          label: 'Rate Calculator',
+                        ),kWidth10,
                         const CustomPillRow(
                           icon: Icons.account_balance_wallet_outlined,
                           label: 'My Accounts',
-                        ),
+                        ),kWidth10,
                       ],
                     ),
                   ],
                 ),
               ),
               kHeight30,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Beneficiarys', style: AppTextStyles.smalltitle()),
-                    Row(
-                      children: [
-                        Text(
-                          'Manage',
-                          style: AppTextStyles.body(
-                            color: korange,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        kWidth15,
-                        Icon(Icons.arrow_forward_ios, color: korange, size: 18),
-                      ],
-                    ),
-                  ],
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: CustomSectionHeader(
+                  title: 'Beneficiarys',
+                  actionLabel: 'Manage',
                 ),
               ),
               kHeight20,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
                   children: [
-                    const CustomBeneficiaryCard(
-                      flagImageUrl: 'https://flagcdn.com/w40/in.png',
-                      name: 'Ajmal',
-                      maskedAccount: '****1234',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'https://flagcdn.com/w40/in.png',
+                          name: 'Ajmal',
+                        ),
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'https://flagcdn.com/w40/us.png',
+                          name: 'Riyas',
+                        ),
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'https://flagcdn.com/w40/ae.png',
+                          name: 'Sajid',
+                        ),
+                      ],
                     ),
-                    const CustomBeneficiaryCard(
-                      flagImageUrl: 'https://flagcdn.com/w40/us.png',
-                      name: 'Riyas',
-                      maskedAccount: '****1234',
-                    ),
-                    const CustomBeneficiaryCard(
-                      flagImageUrl: 'https://flagcdn.com/w40/ae.png',
-                      name: 'Sajid',
-                      maskedAccount: '****1234',
+                    kHeight20,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'https://flagcdn.com/w40/ae.png',
+                          name: 'Ajmal',
+                        ),
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'https://flagcdn.com/w40/in.png',
+                          name: 'Riyas',
+                        ),
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'https://flagcdn.com/w40/us.png',
+                          name: 'Sajid',
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ],
+              kHeight40,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: CustomSectionHeader(
+                  title: 'Bills & Recharges',
+                  actionLabel: 'Manage',
+                ),
+              ),
+              kHeight40,
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        CustomCircleIconTile(
+                          icon: Icons.electric_bolt_outlined,
+                          label: 'Electricity',
+                          value: 'AED 245',
+                        ),
+                        CustomCircleIconTile(
+                          icon: Icons.water_drop_outlined,
+                          label: 'Water',
+                          value: 'AED 89',
+                        ),
+                        CustomCircleIconTile(
+                          icon: Icons.phone_iphone_outlined,
+                          label: 'Mobile',
+                          value: 'AED 150',
+                        ),
+                        CustomCircleIconTile(
+                          icon: Icons.wifi_outlined,
+                          label: 'Internet',
+                          value: 'AED 199',
+                        ),
+                      ],
+                    ),
+                    kHeight20,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        CustomCircleIconTile(
+                          icon: Icons.local_fire_department_outlined,
+                          label: 'Gas',
+                          value: 'AED 120',
+                        ),
+                        CustomCircleIconTile(
+                          icon: Icons.tv_outlined,
+                          label: 'TV / DTH',
+                          value: 'AED 75',
+                        ),
+                        CustomCircleIconTile(
+                          icon: Icons.phone_in_talk_outlined,
+                          label: 'Landline',
+                          value: 'AED 45',
+                        ),
+                        CustomCircleIconTile(
+                          icon: Icons.credit_card_outlined,
+                          label: 'Cards',
+                          value: 'AED 1,240',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              kHeight40,
+
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: CustomSectionHeader(
+                  title: 'Business & Services',
+                  actionLabel: 'Explore',
+                ),
+              ),
+              kHeight40,
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  children: [
+                    CustomCircleIconTile(
+                      icon: Icons.corporate_fare_outlined,
+                      label: 'Wonderland',
+                    ),
+                  ],
+                ),
+              ),
+             kHeight40,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: CustomSectionHeader(
+                  title: 'Cards',
+                  actionLabel: 'Manage',
+                ),
+              ),
+              kHeight40,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  children: [
+                    CustomBeneficiaryCard(
+                      flagImageUrl: 'assets/cms_cards/MC001.png',
+                      name: 'Travel Card',
+                    ),
+                 ],
+                ),
+              ),
+             kHeight40,  ],
           ),
         ],
       ),

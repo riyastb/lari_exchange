@@ -9,12 +9,12 @@ class CustomBeneficiaryCard extends StatelessWidget {
     super.key,
     required this.flagImageUrl,
     required this.name,
-    required this.maskedAccount,
+     this.maskedAccount="",
     this.size = 120,
     this.borderRadius = 13,
     this.flagHeight = 35,
     this.flagWidth = 60,
-    this.flagBorderRadius = 8,
+    this.flagBorderRadius = 7,
     this.nameStyle,
     this.accountStyle,
   });
@@ -80,10 +80,11 @@ class CustomBeneficiaryCard extends StatelessWidget {
             style: nameStyle ?? lineStyle,
           ),
           kHeight2,
+          maskedAccount.isNotEmpty ?
           Text(
             maskedAccount,
             style: accountStyle ?? lineStyle,
-          ),
+          ) : const SizedBox.shrink(),
         ],
       ),
     );
