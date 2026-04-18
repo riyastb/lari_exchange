@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kwhite,
+     // backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
@@ -124,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _onLoginPressed,
                     fullWidth: true,
                     horizontalPadding: 16,
+                    elevation: 1,
                   ),
                   kHeight20,
                   Row(
@@ -140,54 +141,38 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  OutlinedButton.icon(
+                  CustomButton(
+                    label: 'Login with UAE PASS',
+                    leadingIcon: Icons.verified_user_outlined,
+                    iconSize: 22,
                     onPressed: _isLoggingIn
                         ? null
                         : _controller.onLoginWithUaePass,
-                    icon: Icon(
-                      Icons.verified_user_outlined,
-                      color: korange,
-                      size: 22,
-                    ),
-                    label: Text(
-                      'Login with UAE PASS',
-                      style: AppTextStyles.body(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      side: BorderSide(color: korange),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                    fullWidth: true,
+                    horizontalPadding: 16,
+                    verticalPadding: 14,
+                    fontSize: 14,
+                    backgroundColor: kwhite,
+                    foregroundColor: kblack,
+                    elevation: 1,
+                    shadowColor: Colors.black.withValues(alpha: 1),
                   ),
-                  const SizedBox(height: 12),
-                  OutlinedButton.icon(
+                  kHeight12,
+                  CustomButton(
+                    label: 'Login with fingerprint',
+                    leadingIcon: Icons.fingerprint,
+                    iconSize: 26,
                     onPressed: _isLoggingIn
                         ? null
                         : () => _controller.onLoginWithFingerprint(context),
-                    icon: Icon(
-                      Icons.fingerprint,
-                      color: korange,
-                      size: 26,
-                    ),
-                    label: Text(
-                      'Login with fingerprint',
-                      style: AppTextStyles.body(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      side: BorderSide(color: korange),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                    fullWidth: true,
+                    horizontalPadding: 16,
+                    verticalPadding: 14,
+                    fontSize: 14,
+                    backgroundColor: Colors.white,
+                    foregroundColor: kblack,
+                    elevation: 1,
+                    shadowColor: Colors.black.withValues(alpha: 1),
                   ),
                   const SizedBox(height: 28),
                   Wrap(

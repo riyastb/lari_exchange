@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
-import 'package:lari_exchange/presentation/home/widgets/google_pay_style_app_bar.dart';
+import 'package:lari_exchange/core/app_text_styles.dart';
+import 'package:lari_exchange/presentation/widgets/custom_search.dart';
 import 'package:lari_exchange/presentation/widgets/custom_icon_tile.dart';
 import 'package:lari_exchange/presentation/widgets/custom_beneficiary_card.dart';
 import 'package:lari_exchange/presentation/widgets/custom_pill_row.dart';
@@ -25,11 +28,15 @@ class HomeTab extends StatelessWidget {
                 child: Row(
                   children: [
                     CustomSearchField(controller: TextEditingController()),
-                    kWidth5,
+                    kWidth10,
                     CircleAvatar(
-                      radius: 18,
-                      backgroundImage: NetworkImage(
-                        'https://plus.unsplash.com/premium_photo-1661508557554-e3d96f2fdde5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                      radius: 19,
+                      backgroundColor: Colors.grey.shade400,
+                      child: CircleAvatar(
+                        radius: 17,
+                        backgroundImage: NetworkImage(
+                          'https://plus.unsplash.com/premium_photo-1661508557554-e3d96f2fdde5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                        ),
                       ),
                     ),
                   ],
@@ -82,14 +89,22 @@ class HomeTab extends StatelessWidget {
                           label: 'Check your Balance',
                         ),
                         kWidth10,
-                          const CustomPillRow(
+
+                        const CustomPillRow(
+                          icon: Icons.receipt_long_outlined,
+                          label: 'Transactions & History',
+                        ),
+                        kWidth10,
+                        const CustomPillRow(
                           icon: Icons.calculate_outlined,
                           label: 'Rate Calculator',
-                        ),kWidth10,
+                        ),
+                        kWidth10,
                         const CustomPillRow(
                           icon: Icons.account_balance_wallet_outlined,
                           label: 'My Accounts',
-                        ),kWidth10,
+                        ),
+                        kWidth10,
                       ],
                     ),
                   ],
@@ -112,15 +127,17 @@ class HomeTab extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const CustomBeneficiaryCard(
-                          flagImageUrl: 'https://flagcdn.com/w40/in.png',
+                          flagImageUrl: 'assets/flags/27130.jpg',
                           name: 'Ajmal',
                         ),
                         const CustomBeneficiaryCard(
-                          flagImageUrl: 'https://flagcdn.com/w40/us.png',
+                          flagImageUrl:
+                              'assets/flags/vecteezy_national-flag-of-qatar-qatar-flag-waving-qatar-flag_.jpg',
                           name: 'Riyas',
                         ),
                         const CustomBeneficiaryCard(
-                          flagImageUrl: 'https://flagcdn.com/w40/ae.png',
+                          flagImageUrl:
+                              'assets/flags/img-flag-shop-flags-of-the-world-pakistan-flag-3-5.webp',
                           name: 'Sajid',
                         ),
                       ],
@@ -134,11 +151,12 @@ class HomeTab extends StatelessWidget {
                           name: 'Ajmal',
                         ),
                         const CustomBeneficiaryCard(
-                          flagImageUrl: 'https://flagcdn.com/w40/in.png',
-                          name: 'Riyas',
+                          flagImageUrl: 'assets/flags/27130.jpg',
+                          name: 'sujith',
                         ),
                         const CustomBeneficiaryCard(
-                          flagImageUrl: 'https://flagcdn.com/w40/us.png',
+                          flagImageUrl:
+                              'assets/flags/vecteezy_national-flag-of-qatar-qatar-flag-waving-qatar-flag_.jpg',
                           name: 'Sajid',
                         ),
                       ],
@@ -236,7 +254,7 @@ class HomeTab extends StatelessWidget {
                   ],
                 ),
               ),
-             kHeight40,
+              kHeight40,
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: CustomSectionHeader(
@@ -247,16 +265,135 @@ class HomeTab extends StatelessWidget {
               kHeight40,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
+                child: Column(
                   children: [
-                    CustomBeneficiaryCard(
-                      flagImageUrl: 'assets/cms_cards/MC001.png',
-                      name: 'Travel Card',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomBeneficiaryCard(
+                          flagImageUrl: 'assets/cms_cards/TF002.png',
+                          flagHeight: 45,
+                          flagWidth: 70,
+                          flagBorderRadius: 10,
+                          name: 'Travel Flex',
+                        ),
+                        CustomBeneficiaryCard(
+                          flagImageUrl: 'assets/cms_cards/MC002.png',
+                          flagHeight: 45,
+                          flagWidth: 70,
+                          flagBorderRadius: 10,
+                          name: 'Travel World',
+                        ),
+                        CustomBeneficiaryCard(
+                          flagImageUrl: 'assets/cms_cards/MC001.png',
+                          flagHeight: 45,
+                          flagWidth: 70,
+                          flagBorderRadius: 10,
+                          name: 'Travel Card',
+                        ),
+                      ],
                     ),
-                 ],
+                    kHeight20,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomBeneficiaryCard(
+                          flagImageUrl: 'assets/cms_cards/MC003.png',
+                          flagHeight: 45,
+                          flagWidth: 70,
+                          flagBorderRadius: 10,
+                          name: 'Paymax',
+                        ),
+                        CustomBeneficiaryCard(
+                          flagImageUrl: 'assets/cms_cards/TW001.png',
+                          flagHeight: 45,
+                          flagWidth: 70,
+                          flagBorderRadius: 10,
+                          name: 'Travel World',
+                        ),
+                        CustomBeneficiaryCard(
+                          flagImageUrl: 'assets/cms_cards/RC001.png',
+                          flagHeight: 45,
+                          flagWidth: 70,
+                          flagBorderRadius: 10,
+                          name: 'Travel Card',
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-             kHeight40,  ],
+              kHeight40,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: CustomSectionHeader(
+                  title: 'Employees',
+                  actionLabel: 'Manage',
+                ),
+              ),
+              kHeight40,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: CustomCircleIconTile(
+                        icon: Icons.person_rounded,
+                        label: 'Sumeesh',
+                      ),
+                    ),
+                    Expanded(
+                      child: CustomCircleIconTile(
+                        icon: Icons.person_rounded,
+                        label: 'Ross',
+                      ),
+                    ),
+                    Expanded(
+                      child: CustomCircleIconTile(
+                        icon: Icons.person_rounded,
+                        label: 'Safwan',
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.grey.shade300,
+                                width: 1,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.white,
+                              child: Center(
+                                child: Image.asset(
+                                  'assets/flags/down.png',
+                                  height: 22,
+                                ),
+                              ),
+                            ),
+                          ),
+                          kHeight4,
+                          Text(
+                            'More',
+                            style: AppTextStyles.body(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              kHeight100,
+            ],
           ),
         ],
       ),

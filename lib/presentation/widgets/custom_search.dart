@@ -19,16 +19,25 @@ class CustomSearchField extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Container(
       height: 49,
-      width: size.width*0.78,
+      width: size.width * 0.78,
       decoration: BoxDecoration(
-        color: Colors.white70,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08), // very light shadow
-            blurRadius: 12, // smooth blur
-            spreadRadius: 1, // slight spread
-            offset: const Offset(0, 4), // soft downward shadow
+            color: Colors.black.withOpacity(0.10),
+            blurRadius: 1,
+            offset: const Offset(0, 2),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 3,
+            offset: const Offset(-1, 1),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 3,
+            offset: const Offset(1, 1),
           ),
         ],
       ),
@@ -49,7 +58,7 @@ class CustomSearchField extends StatelessWidget {
           //   minHeight: 44,
           //   maxHeight: 49,
           // ),
-          prefixIcon: const Icon(Icons.search, color: kblack,size: 20,),
+          prefixIcon: const Icon(Icons.search, color: kblack, size: 20),
         ),
       ),
     );
