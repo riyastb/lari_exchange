@@ -57,6 +57,20 @@ abstract final class AppTextStyles {
     );
   }
 
+
+
+    static TextStyle smalltitle({
+    double fontSize = 19,
+    FontWeight fontWeight = FontWeight.w600,
+    Color color = Colors.black87,
+  }) {
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
   static TextStyle bodyMuted({
     double fontSize = 13,
     FontWeight fontWeight = FontWeight.w400,

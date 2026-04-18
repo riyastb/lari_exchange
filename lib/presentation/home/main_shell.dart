@@ -64,6 +64,7 @@ class MainShell extends StatelessWidget {
     return Scaffold(
       backgroundColor: kwhite,
 
+      // Color.fromARGB(255, 255, 232, 218),
       body: navigationShell,
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
@@ -72,7 +73,7 @@ class MainShell extends StatelessWidget {
             // if (states.contains(WidgetState.selected)) {
             //   return base.copyWith(fontWeight: FontWeight.w600);
             // }
-            return base.copyWith(fontWeight: FontWeight.w600, );
+            return base.copyWith(fontWeight: FontWeight.w600, fontSize: 12);
           }),
         ),
         child: NavigationBar(

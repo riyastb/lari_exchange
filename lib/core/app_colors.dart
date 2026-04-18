@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const Color korange = Color(0xFFFF8C42);
+const Color korangemild = Color.fromARGB(74, 255, 204, 172);
 const Color kwhite = Colors.white;
 const Color klightOrange = Color(0xFFFFB997);
 const Color kblue = Color(0xFF3A86FF);
