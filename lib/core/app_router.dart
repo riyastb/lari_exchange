@@ -34,7 +34,7 @@ abstract final class AppRouteNames {
 }
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutePaths.login,
+  initialLocation: AppRoutePaths.home,
   routes: [
     GoRoute(
       path: AppRoutePaths.login,

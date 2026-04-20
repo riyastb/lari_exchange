@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
@@ -6,7 +8,7 @@ import 'package:lari_exchange/core/app_text_styles.dart';
 const String _profileNavImageUrl =
     'https://plus.unsplash.com/premium_photo-1661508557554-e3d96f2fdde5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
-/// Avatar for the "You" tab — no person icon, only [CircleAvatar] + network image.
+
 Widget _profileNavAvatar(bool selected) {
   return Container(
     decoration: BoxDecoration(
@@ -24,6 +26,25 @@ Widget _profileNavAvatar(bool selected) {
   );
 }
 
+Widget _shellNavAssetIcon(String path, Color accent) {
+  if (path.toLowerCase().endsWith('.svg')) {
+    return SvgPicture.asset(
+      path,
+      width: 24,
+      height: 24,
+      fit: BoxFit.contain,
+      colorFilter: ColorFilter.mode(accent, BlendMode.srcIn),
+    );
+  }
+  return Image.asset(
+    path,
+    width: 24,
+    height: 24,
+    fit: BoxFit.contain,
+    gaplessPlayback: true,
+  );
+}
+
 class MainShell extends StatelessWidget {
   const MainShell({super.key, required this.navigationShell});
 
@@ -34,15 +55,15 @@ class MainShell extends StatelessWidget {
       label: 'Home',
       title: 'Lari Exchange',
       subtitle: 'Good morning',
-      icon: Icons.home_outlined,
-      selectedIcon: Icons.home_rounded,
+      iconAsset: 'assets/icons/home_10969635.svg',
+      selectedIconAsset: 'assets/icons/home_10969635.svg',
     ),
     const _ShellDestination(
       label: 'Activity',
       title: 'Activity',
       subtitle: 'Recent transactions',
-      icon: Icons.receipt_long_outlined,
-      selectedIcon: Icons.receipt_long_rounded,
+      iconAsset: 'assets/icons/history_10348886.svg',
+      selectedIconAsset: 'assets/icons/history_10348886.svg',
     ),
     _ShellDestination(
       label: 'You',
@@ -59,38 +80,112 @@ class MainShell extends StatelessWidget {
       0,
       _destinations.length - 1,
     );
-    final dest = _destinations[index];
+    final barWidth = MediaQuery.sizeOf(context).width - 24;
 
     return Scaffold(
+      extendBody: true,
       backgroundColor: kwhite,
-
-      // Color.fromARGB(255, 255, 232, 218),
-      body: navigationShell,
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          labelTextStyle: WidgetStateProperty.resolveWith((states) {
-            final base = AppTextStyles.body();
-            // if (states.contains(WidgetState.selected)) {
-            //   return base.copyWith(fontWeight: FontWeight.w600);
-            // }
-            return base.copyWith(fontWeight: FontWeight.w600, fontSize: 12);
-          }),
-        ),
-        child: NavigationBar(
-          backgroundColor: korange.withValues(alpha: 0.05),
-          selectedIndex: index,
-          onDestinationSelected: navigationShell.goBranch,
-          height: 72,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          indicatorColor: scheme.primary.withValues(alpha: 0.12),
-          destinations: [
-            for (final d in _destinations)
-              NavigationDestination(
-                icon: d._navIcon(false),
-                selectedIcon: d._navIcon(true),
-                label: d.label,
-              ),
+      body: BottomBar(
+        fit: StackFit.expand,
+        hideOnScroll: false,
+        showIcon: false,
+        offset: 12,
+        width: barWidth,
+        duration: const Duration(milliseconds: 280),
+        curve: Curves.easeOutCubic,
+        barAlignment: Alignment.bottomCenter,
+        barColor: kwhite.withValues(alpha: 0.94),
+        borderRadius: BorderRadius.circular(28),
+        barDecoration: BoxDecoration(
+          color: kwhite.withValues(alpha: 0.94),
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+            BoxShadow(
+              color: korange.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+          child: Row(
+            children: [
+              for (var i = 0; i < _destinations.length; i++)
+                Expanded(
+                  child: _ShellNavItem(
+                    destination: _destinations[i],
+                    selected: i == index,
+                    scheme: scheme,
+                    onTap: () => navigationShell.goBranch(i),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        body: (context, controller) => PrimaryScrollController(
+          controller: controller,
+          child: navigationShell,
+        ),
+      ),
+    );
+  }
+}
+
+class _ShellNavItem extends StatelessWidget {
+  const _ShellNavItem({
+    required this.destination,
+    required this.selected,
+    required this.scheme,
+    required this.onTap,
+  });
+
+  final _ShellDestination destination;
+  final bool selected;
+  final ColorScheme scheme;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = selected ? scheme.primary : scheme.onSurfaceVariant;
+    final pillColor = selected
+        ? scheme.primary.withValues(alpha: 0.12)
+        : Colors.transparent;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Material(
+        color: pillColor,
+        borderRadius: BorderRadius.circular(20),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                destination.navGlyph(selected: selected, accent: accent),
+                const SizedBox(height: 4),
+                Text(
+                  destination.label,
+                  style: AppTextStyles.body().copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: accent,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -104,9 +199,25 @@ class _ShellDestination {
     required this.subtitle,
     this.icon,
     this.selectedIcon,
+    this.iconAsset,
+    this.selectedIconAsset,
     this.avatarBuilder,
   }) : assert(
-         (avatarBuilder != null) != (icon != null && selectedIcon != null),
+         // Exactly one: custom avatar, vector icons, or asset icons.
+         (avatarBuilder != null &&
+                 icon == null &&
+                 selectedIcon == null &&
+                 iconAsset == null &&
+                 selectedIconAsset == null) ||
+             (avatarBuilder == null &&
+                 icon != null &&
+                 selectedIcon != null &&
+                 iconAsset == null &&
+                 selectedIconAsset == null) ||
+             (avatarBuilder == null &&
+                 icon == null &&
+                 selectedIcon == null &&
+                 iconAsset != null),
        );
 
   final String label;
@@ -114,12 +225,23 @@ class _ShellDestination {
   final String subtitle;
   final IconData? icon;
   final IconData? selectedIcon;
+  final String? iconAsset;
+  final String? selectedIconAsset;
   final Widget Function(bool selected)? avatarBuilder;
 
-  Widget _navIcon(bool selected) {
+  Widget navGlyph({required bool selected, required Color accent}) {
     if (avatarBuilder != null) {
       return avatarBuilder!(selected);
     }
-    return Icon(selected ? selectedIcon! : icon!);
+    if (iconAsset != null) {
+      final path =
+          selected ? (selectedIconAsset ?? iconAsset!) : iconAsset!;
+      return _shellNavAssetIcon(path, accent);
+    }
+    return Icon(
+      selected ? selectedIcon! : icon!,
+      color: accent,
+      size: 24,
+    );
   }
 }

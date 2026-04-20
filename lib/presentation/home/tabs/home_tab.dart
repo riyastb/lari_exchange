@@ -15,8 +15,12 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomInset =
+        MediaQuery.viewPaddingOf(context).bottom + kFloatingNavContentInset;
     return SafeArea(
+      bottom: false,
       child: ListView(
+        padding: EdgeInsets.only(bottom: bottomInset),
         children: [
           Column(
             children: [
@@ -114,7 +118,7 @@ class HomeTab extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: CustomSectionHeader(
-                  title: 'Beneficiarys',
+                  title: 'Beneficiaries',
                   actionLabel: 'Manage',
                 ),
               ),

@@ -12,3 +12,6 @@ const Color kgreen = Color(0xFF06D6A0);
 const Color kpurple = Color(0xFF8338EC);
 const Color kblack = Colors.black;
 
+/// Extra bottom inset for lists under MainShell's floating navigation bar.
+const double kFloatingNavContentInset = 76;
+
