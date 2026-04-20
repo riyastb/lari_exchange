@@ -38,7 +38,24 @@ dependencies:
   go_router: ^14.8.1
   local_auth: ^2.3.0
   pinput: ^6.0.2
-
+  get: ^4.7.3
+  flutter_bloc: ^9.1.1
+  grpc: ^4.0.4
+  protobuf: ^5.0.0
+  firebase_messaging: ^15.2.10
+  firebase_remote_config: ^5.4.7
+  logger: ^2.6.0
+  dio: ^5.8.0+1
+  flutter_secure_storage: ^10.0.0
+  device_info_plus: ^11.5.0
+  uuid: ^4.5.1
+  keyboard_actions: ^4.2.0
+  flutter_screenutil: ^5.9.3
+  geocoding: ^4.0.0
+  location: ^8.0.1
+  lottie: ^3.3.1
+  url_launcher: ^6.3.1
+  permission_handler: ^12.0.1 
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/presentation/auth/login_screen.dart';
 import 'package:lari_exchange/presentation/auth/verify_otp_screen.dart';
+import 'package:lari_exchange/presentation/history/trnasaction_history.dart';
 import 'package:lari_exchange/presentation/home/main_shell.dart';
 
 import 'package:lari_exchange/presentation/home/tabs/home_tab.dart';
@@ -17,6 +18,7 @@ abstract final class AppRoutePaths {
   static const wallet = '/wallet';
   static const activity = '/activity';
   static const profile = '/profile';
+  static const history='/history';
 }
 
 abstract final class AppRouteNames {
@@ -28,6 +30,7 @@ abstract final class AppRouteNames {
   static const wallet = 'wallet';
   static const activity = 'activity';
   static const profile = 'profile';
+  static const history='history';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -47,6 +50,13 @@ final GoRouter appRouter = GoRouter(
         final extra = state.extra;
         final id = extra is String ? extra : '';
         return VerifyOtpScreen(identifier: id);
+      },
+    ),
+     GoRoute(
+      path: AppRoutePaths.history,
+      name: AppRouteNames.history,
+      builder: (BuildContext context, GoRouterState state) {
+        return const TrnasactionHistory();
       },
     ),
     StatefulShellRoute.indexedStack(

@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lari_exchange/application/sign_in/sign_in_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_icons.dart';
-import 'package:lari_exchange/core/app_router.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
+import 'package:lari_exchange/presentation/auth/controller/login_otp_controller.dart';
 import 'package:lari_exchange/presentation/widgets/custom_button.dart';
 import 'package:pinput/pinput.dart';
 
@@ -24,8 +26,10 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   static const int _otpLength = 4;
   static const int _resendCooldownSec = 60;
 
-  final _otpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  TextEditingController get _otpController =>
+      LoginOtpControllers.loginOtpTextField;
 
   Timer? _resendTimer;
   int _secondsUntilResend = 0;
@@ -81,7 +85,6 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   @override
   void dispose() {
     _resendTimer?.cancel();
-    _otpController.dispose();
     super.dispose();
   }
 
@@ -93,10 +96,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   }
 
   void _onVerify() {
+    final signInBloc = context.read<SignInBloc>();
+    if (signInBloc.state.isLoading) return;
     FocusScope.of(context).unfocus();
-    if (_formKey.currentState?.validate() ?? false) {
-      context.go(AppRoutePaths.home);
-    }
+    signInBloc.add(
+      VerifyOtpLogin(context: context, loginOtpFormKey: _formKey),
+    );
   }
 
   PinTheme _pinTheme() {
@@ -216,6 +221,21 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   Widget build(BuildContext context) {
     final defaultPin = _pinTheme();
 
+    return BlocBuilder<SignInBloc, SignInState>(
+      buildWhen: (SignInState previous, SignInState current) =>
+          previous.isLoading != current.isLoading,
+      builder: (BuildContext context, SignInState signInState) {
+        final isVerifying = signInState.isLoading;
+        return _buildBody(context, defaultPin, isVerifying);
+      },
+    );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+    PinTheme defaultPin,
+    bool isVerifying,
+  ) {
     return Scaffold(
       backgroundColor: kwhite,
 
@@ -241,6 +261,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 Pinput(
                   length: _otpLength,
                   controller: _otpController,
+                  enabled: !isVerifying,
                   autofocus: true,
                   defaultPinTheme: defaultPin,
                   focusedPinTheme: _focusedPinTheme(),
@@ -254,8 +275,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   autofillHints: const [AutofillHints.oneTimeCode],
                   hapticFeedbackType: HapticFeedbackType.lightImpact,
                   closeKeyboardWhenCompleted: true,
-                  onCompleted: (_) => _onVerify(),
-                  onSubmitted: (_) => _onVerify(),
+                  onCompleted: (_) {
+                    if (!isVerifying) _onVerify();
+                  },
+                  onSubmitted: (_) {
+                    if (!isVerifying) _onVerify();
+                  },
                   errorTextStyle: AppTextStyles.fieldError(),
                 ),
                 kHeight20,
@@ -263,7 +288,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 kHeight100,
                 CustomButton(
                   label: 'Verify & continue',
-                  onPressed: _onVerify,
+                  isLoading: isVerifying,
+                  loadingLabel: 'Verifying…',
+                  onPressed: isVerifying ? null : _onVerify,
                   fullWidth: true,
                   horizontalPadding: 16,
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lari_exchange/core/app_colors.dart';
+import 'package:lari_exchange/core/app_constants.dart';
 
 
 abstract final class AppTextStyles {

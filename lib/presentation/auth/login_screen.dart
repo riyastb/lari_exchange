@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lari_exchange/application/sign_in/sign_in_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_router.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 import 'package:lari_exchange/core/app_icons.dart';
+import 'package:lari_exchange/presentation/auth/controller/login_controller.dart'
+    as sign_in_ctrl;
 import 'package:lari_exchange/presentation/auth/login_controller.dart';
 import 'package:lari_exchange/presentation/widgets/custom_button.dart';
 import 'package:lari_exchange/presentation/widgets/custom_text_field.dart';
@@ -18,7 +22,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late final LoginController _controller;
-  bool _isLoggingIn = false;
 
   @override
   void initState() {
@@ -32,30 +35,43 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _onLoginPressed() async {
-    if (_isLoggingIn) return;
+  void _onLoginPressed() {
+    final signInBloc = context.read<SignInBloc>();
+    if (signInBloc.state.isLoading) return;
     if (!_controller.validate()) return;
 
-    setState(() => _isLoggingIn = true);
+    sign_in_ctrl.LogInController.usernameController.text =
+        _controller.usernameController.text;
+    sign_in_ctrl.LogInController.passwordController.text =
+        _controller.passwordController.text;
     FocusScope.of(context).unfocus();
-
-    try {
-      final ok = await _controller.submitCredentials();
-      if (!mounted) return;
-      setState(() => _isLoggingIn = false);
-      if (!ok) return;
-
-      await context.pushNamed(
-        AppRouteNames.verifyOtp,
-        extra: _controller.username,
-      );
-    } catch (_) {
-      if (mounted) setState(() => _isLoggingIn = false);
-    }
+    signInBloc.add(SignInUserLoginEvent(context: context));
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<SignInBloc, SignInState>(
+      listenWhen: (SignInState previous, SignInState current) {
+        final curr = current.LoginUserPayload;
+        if (curr == null || !curr.result) return false;
+        final prev = previous.LoginUserPayload;
+        return prev != curr;
+      },
+      listener: (BuildContext context, SignInState state) {
+        if (!context.mounted) return;
+        context.pushNamed(
+          AppRouteNames.verifyOtp,
+          extra: _controller.username,
+        );
+      },
+      builder: (BuildContext context, SignInState signInState) {
+        final isLoggingIn = signInState.isLoading;
+        return _buildScaffold(context, isLoggingIn);
+      },
+    );
+  }
+
+  Widget _buildScaffold(BuildContext context, bool isLoggingIn) {
     return Scaffold(
      // backgroundColor: Colors.white,
       body: SafeArea(
@@ -78,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     prefixIcon: Icons.person_outline_rounded,
                     textInputAction: TextInputAction.next,
                     autocorrect: false,
-                    enabled: !_isLoggingIn,
+                    enabled: !isLoggingIn,
                     autofillHints: const [AutofillHints.username],
                     validator: _controller.validateRequired,
                   ),
@@ -91,10 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscureText: true,
                     textInputAction: TextInputAction.done,
                     onFieldSubmitted: (_) {
-                      if (!_isLoggingIn) _onLoginPressed();
+                      if (!isLoggingIn) _onLoginPressed();
                     },
                     autocorrect: false,
-                    enabled: !_isLoggingIn,
+                    enabled: !isLoggingIn,
                     autofillHints: const [AutofillHints.password],
                     validator: _controller.validateRequired,
                   ),
@@ -103,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed:
-                          _isLoggingIn ? null : _controller.onForgotPassword,
+                          isLoggingIn ? null : _controller.onForgotPassword,
                       style: TextButton.styleFrom(
                         foregroundColor: korange,
                         padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -119,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   kHeight100,
                   CustomButton(
                     label: 'Login',
-                    isLoading: _isLoggingIn,
+                    isLoading: isLoggingIn,
                     loadingLabel: 'Signing in…',
                     onPressed: _onLoginPressed,
                     fullWidth: true,
@@ -145,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     label: 'Login with UAE PASS',
                     leadingIcon: Icons.verified_user_outlined,
                     iconSize: 22,
-                    onPressed: _isLoggingIn
+                    onPressed: isLoggingIn
                         ? null
                         : _controller.onLoginWithUaePass,
                     fullWidth: true,
@@ -162,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     label: 'Login with fingerprint',
                     leadingIcon: Icons.fingerprint,
                     iconSize: 26,
-                    onPressed: _isLoggingIn
+                    onPressed: isLoggingIn
                         ? null
                         : () => _controller.onLoginWithFingerprint(context),
                     fullWidth: true,
@@ -185,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed:
-                            _isLoggingIn ? null : _controller.onRegister,
+                            isLoggingIn ? null : _controller.onRegister,
                         style: TextButton.styleFrom(
                           foregroundColor: korange,
                           padding: EdgeInsets.zero,
@@ -202,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 12),
                   Center(
                     child: TextButton(
-                      onPressed: _isLoggingIn ? null : _controller.onNeedHelp,
+                      onPressed: isLoggingIn ? null : _controller.onNeedHelp,
                       style: TextButton.styleFrom(
                         foregroundColor: korange,
                         padding: const EdgeInsets.symmetric(horizontal: 8),

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
-class LoginController {
-  LoginController() : _localAuth = LocalAuthentication();
+class LogInController {
+  LogInController() : _localAuth = LocalAuthentication();
 
   final LocalAuthentication _localAuth;
   final formKey = GlobalKey<FormState>();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  static TextEditingController usernameController = TextEditingController();
+  static TextEditingController passwordController = TextEditingController();
 
   String? validateRequired(String? value) {
     if (value == null || value.trim().isEmpty) {
