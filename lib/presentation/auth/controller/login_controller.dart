@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
-class LogInController {
-  LogInController() : _localAuth = LocalAuthentication();
+class LoginController {
+  LoginController() : _localAuth = LocalAuthentication();
 
   final LocalAuthentication _localAuth;
   final formKey = GlobalKey<FormState>();
-  static TextEditingController usernameController = TextEditingController();
-  static TextEditingController passwordController = TextEditingController();
+
+  static final TextEditingController usernameController = TextEditingController();
+  static final TextEditingController passwordController = TextEditingController();
 
   String? validateRequired(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -17,7 +18,6 @@ class LogInController {
     return null;
   }
 
-  /// Returns true if the form is valid and login may proceed.
   bool validate() => formKey.currentState?.validate() ?? false;
 
   String get username => usernameController.text.trim();
@@ -25,13 +25,10 @@ class LogInController {
 
   void onLogin() {
     if (!validate()) return;
-    // Prefer [submitCredentials] from UI for async + navigation.
   }
 
-  /// Validates then performs login (e.g. request OTP). Returns false if validation fails.
   Future<bool> submitCredentials() async {
     if (!validate()) return false;
-    // TODO: replace with real API — request OTP / session
     await Future<void>.delayed(const Duration(milliseconds: 900));
     return true;
   }
@@ -48,8 +45,6 @@ class LogInController {
     // TODO: open help center, support chat, or mailto link
   }
 
-  /// UAE PASS — integrate with the official SDK / OAuth flow when ready.
-  /// See: https://docs.uaepass.ae
   void onLoginWithUaePass() {
     // TODO: start UAE PASS authentication (deep link / web view / native SDK)
   }
@@ -100,10 +95,5 @@ class LogInController {
 
   void _snack(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
   }
 }

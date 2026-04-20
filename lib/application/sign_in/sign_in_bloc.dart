@@ -187,7 +187,7 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
         'SignIn: login started biometric=${event.isBiometric} fromAutoBio=${event.fromAutoBioFlow}',
       );
       FocusManager.instance.primaryFocus?.unfocus();
-     // LogInController.autoValidate = AutovalidateMode.disabled;
+     // LoginController.autoValidate = AutovalidateMode.disabled;
 
       emit(
         state.copyWith(
@@ -195,8 +195,8 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
           loginUserPayload: user.LoginResponsePayload(),
         ),
       );
-      final username = LogInController.usernameController.text;
-      final password = LogInController.passwordController.text;
+      final username = LoginController.usernameController.text;
+      final password = LoginController.passwordController.text;
 
       var result = event.isBiometric
           ? await biometricLogin(
@@ -215,7 +215,7 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
       Universal.userId = result.userPayload.id;
       if (result.result) {
-       // LogInController.passwordOTPTextEditController.clear();
+       // LoginController.passwordOTPTextEditController.clear();
         emit(state.copyWith(isSendPin: false, loginUserPayload: result));
 
         // if (event.isBiometric) {
@@ -333,9 +333,9 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
       debugPrint('adc_ Error during login: $e\n$stackTrace');
     } finally {
       emit(state.copyWith(isLoading: false));
-      // LogInController.userNameController.clear();
-      // LogInController.passwordController.clear();
-   //   LogInController.passwordOTPTextEditController.clear();
+      // LoginController.userNameController.clear();
+      // LoginController.passwordController.clear();
+   //   LoginController.passwordOTPTextEditController.clear();
     }
   }
 
@@ -352,7 +352,7 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
     FocusManager.instance.primaryFocus?.unfocus();
     event.loginOtpFormKey.currentState?.save();
-   // LogInController.autoValidate = AutovalidateMode.disabled;
+   // LoginController.autoValidate = AutovalidateMode.disabled;
     try {
       emit(state.copyWith(isLoading: true));
       String token = '';
@@ -398,7 +398,7 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
           debugPrint(
               '🔑 [SignInBloc] OTP verified — fetching corporate accounts...');
           // debugPrint(
-          //     '🔑 [SignInBloc] username = ${LogInController.userNameController.text}');
+          //     '🔑 [SignInBloc] username = ${LoginController.userNameController.text}');
 
           // Fetch corporate accounts for this user
           add(GetCorporateEvent());
@@ -431,7 +431,7 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
     } finally {
       emit(state.copyWith(isLoading: false));
       LoginOtpControllers.loginOtpTextField.clear();
-    //  LogInController.passwordOTPTextEditController.clear();
+    //  LoginController.passwordOTPTextEditController.clear();
     }
   }
 
@@ -484,7 +484,7 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
     } finally {
       emit(state.copyWith(isLoading: false));
     //  CommonController.otpTextEditController.clear();
-    //  LogInController.passwordOTPTextEditController.clear();
+    //  LoginController.passwordOTPTextEditController.clear();
     }
   }
 
@@ -1187,21 +1187,21 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   FutureOr<void> _onSignInInit(
       SignInInitEvent event, Emitter<SignInState> emit) async {
-  //  LogInController.userNameController.clear();
-    LogInController.passwordController.clear();
+  //  LoginController.userNameController.clear();
+    LoginController.passwordController.clear();
     if (kDebugMode) {
-      // LogInController.userNameController.text = '243780678';
-      // LogInController.passwordController.text = 'Pass@123';
-      // LogInController.userNameController.text = '767979777';
-      // LogInController.userNameController.text = '506413790';
-      // LogInController.userNameController.text = '536425243';
-      // LogInController.userNameController.text = '123456789';
-      // LogInController.userNameController.text = 'ROSHAN00007@LARIEXCHANGE.COM';
-     // LogInController.userNameController.text = 'Basil';
-      // LogInController.userNameController.text = '956730704';
-      // LogInController.passwordController.text = '7777';
-      // LogInController.passwordController.text = 'Rabi@123';
-      LogInController.passwordController.text = 'Basil@12345';
+      // LoginController.userNameController.text = '243780678';
+      // LoginController.passwordController.text = 'Pass@123';
+      // LoginController.userNameController.text = '767979777';
+      // LoginController.userNameController.text = '506413790';
+      // LoginController.userNameController.text = '536425243';
+      // LoginController.userNameController.text = '123456789';
+      // LoginController.userNameController.text = 'ROSHAN00007@LARIEXCHANGE.COM';
+     // LoginController.userNameController.text = 'Basil';
+      // LoginController.userNameController.text = '956730704';
+      // LoginController.passwordController.text = '7777';
+      // LoginController.passwordController.text = 'Rabi@123';
+      LoginController.passwordController.text = 'Basil@12345';
     }
   }
 

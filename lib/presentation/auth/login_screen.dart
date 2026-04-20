@@ -7,9 +7,7 @@ import 'package:lari_exchange/core/app_router.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 import 'package:lari_exchange/core/app_icons.dart';
-import 'package:lari_exchange/presentation/auth/controller/login_controller.dart'
-    as sign_in_ctrl;
-import 'package:lari_exchange/presentation/auth/login_controller.dart';
+import 'package:lari_exchange/presentation/auth/controller/login_controller.dart';
 import 'package:lari_exchange/presentation/widgets/custom_button.dart';
 import 'package:lari_exchange/presentation/widgets/custom_text_field.dart';
 
@@ -29,21 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
     _controller = LoginController();
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   void _onLoginPressed() {
     final signInBloc = context.read<SignInBloc>();
     if (signInBloc.state.isLoading) return;
     if (!_controller.validate()) return;
-
-    sign_in_ctrl.LogInController.usernameController.text =
-        _controller.usernameController.text;
-    sign_in_ctrl.LogInController.passwordController.text =
-        _controller.passwordController.text;
     FocusScope.of(context).unfocus();
     signInBloc.add(SignInUserLoginEvent(context: context));
   }
@@ -88,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Image.asset(AppIcons.larilogoimage, height: 140),
                   kHeight100,
                   CustomTextField(
-                    controller: _controller.usernameController,
+                    controller: LoginController.usernameController,
                     label: 'Username',
                     hintText: 'Enter your username',
                     prefixIcon: Icons.person_outline_rounded,
@@ -100,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   kHeight16,
                   CustomTextField(
-                    controller: _controller.passwordController,
+                    controller: LoginController.passwordController,
                     label: 'Password',
                     hintText: 'Enter your password',
                     prefixIcon: Icons.lock_outline_rounded,
