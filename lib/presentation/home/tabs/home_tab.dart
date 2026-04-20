@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
@@ -26,11 +27,11 @@ class HomeTab extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
+                  horizontal: 20,
                   vertical: 8,
                 ),
                 child: Row(
-                  children: [
+                  children: [SvgPicture.asset('assets/icons/logo-small_bg.svg',height: 50,) ,
                     CustomSearchField(controller: TextEditingController()),
                     kWidth10,
                     CircleAvatar(

@@ -19,7 +19,7 @@ class CustomSearchField extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Container(
       height: 49,
-      width: size.width * 0.78,
+      width: size.width * 0.70,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30),
