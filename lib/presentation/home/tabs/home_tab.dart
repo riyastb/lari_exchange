@@ -181,25 +181,33 @@ class HomeTab extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        CustomCircleIconTile(
-                          icon: Icons.electric_bolt_outlined,
-                          label: 'Electricity',
-                          value: 'AED 245',
+                        Expanded(
+                          child: CustomCircleIconTile(
+                            icon: Icons.electric_bolt_outlined,
+                            label: 'Electricity',
+                            value: 'AED 245',
+                          ),
                         ),
-                        CustomCircleIconTile(
-                          icon: Icons.water_drop_outlined,
-                          label: 'Water',
-                          value: 'AED 89',
+                        Expanded(
+                          child: CustomCircleIconTile(
+                            icon: Icons.water_drop_outlined,
+                            label: 'Water',
+                            value: 'AED 89',
+                          ),
                         ),
-                        CustomCircleIconTile(
-                          icon: Icons.phone_iphone_outlined,
-                          label: 'Mobile',
-                          value: 'AED 150',
+                        Expanded(
+                          child: CustomCircleIconTile(
+                            icon: Icons.phone_iphone_outlined,
+                            label: 'Mobile',
+                            value: 'AED 150',
+                          ),
                         ),
-                        CustomCircleIconTile(
-                          icon: Icons.wifi_outlined,
-                          label: 'Internet',
-                          value: 'AED 199',
+                        Expanded(
+                          child: CustomCircleIconTile(
+                            icon: Icons.wifi_outlined,
+                            label: 'Internet',
+                            value: 'AED 199',
+                          ),
                         ),
                       ],
                     ),
@@ -207,25 +215,33 @@ class HomeTab extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        CustomCircleIconTile(
-                          icon: Icons.local_fire_department_outlined,
-                          label: 'Gas',
-                          value: 'AED 120',
+                        Expanded(
+                          child: CustomCircleIconTile(
+                            icon: Icons.local_fire_department_outlined,
+                            label: 'Gas',
+                            value: 'AED 120',
+                          ),
                         ),
-                        CustomCircleIconTile(
-                          icon: Icons.tv_outlined,
-                          label: 'TV / DTH',
-                          value: 'AED 75',
+                        Expanded(
+                          child: CustomCircleIconTile(
+                            icon: Icons.tv_outlined,
+                            label: 'TV / DTH',
+                            value: 'AED 75',
+                          ),
                         ),
-                        CustomCircleIconTile(
-                          icon: Icons.phone_in_talk_outlined,
-                          label: 'Landline',
-                          value: 'AED 45',
+                        Expanded(
+                          child: CustomCircleIconTile(
+                            icon: Icons.phone_in_talk_outlined,
+                            label: 'Landline',
+                            value: 'AED 45',
+                          ),
                         ),
-                        CustomCircleIconTile(
-                          icon: Icons.credit_card_outlined,
-                          label: 'Cards',
-                          value: 'AED 1,240',
+                        Expanded(
+                          child: CustomCircleIconTile(
+                            icon: Icons.credit_card_outlined,
+                            label: 'Cards',
+                            value: 'AED 1,240',
+                          ),
                         ),
                       ],
                     ),
