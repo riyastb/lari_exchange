@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lari_exchange/core/app_icons.dart';
 
 class TrnasactionHistory extends StatefulWidget {
   const TrnasactionHistory({super.key});
@@ -10,10 +11,6 @@ class TrnasactionHistory extends StatefulWidget {
 class _TrnasactionHistoryState extends State<TrnasactionHistory> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Transaction History'),
-      ),
-    );
+    return Scaffold(body: Column(children: [Image.asset(AppIcons.laribanner)]));
   }
 }

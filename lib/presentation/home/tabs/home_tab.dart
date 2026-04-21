@@ -27,11 +27,15 @@ class HomeTab extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
+                  horizontal: 16,
                   vertical: 8,
                 ),
                 child: Row(
-                  children: [SvgPicture.asset('assets/icons/logo-small_bg.svg',height: 50,) ,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/logo-small_bg.svg',
+                      height: 50,
+                    ),
                     CustomSearchField(controller: TextEditingController()),
                     kWidth10,
                     CircleAvatar(
@@ -115,60 +119,7 @@ class HomeTab extends StatelessWidget {
                   ],
                 ),
               ),
-              kHeight30,
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: CustomSectionHeader(
-                  title: 'Beneficiaries',
-                  actionLabel: 'Manage',
-                ),
-              ),
-              kHeight20,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/flags/27130.jpg',
-                          name: 'Ajmal',
-                        ),
-                        const CustomBeneficiaryCard(
-                          flagImageUrl:
-                              'assets/flags/vecteezy_national-flag-of-qatar-qatar-flag-waving-qatar-flag_.jpg',
-                          name: 'Riyas',
-                        ),
-                        const CustomBeneficiaryCard(
-                          flagImageUrl:
-                              'assets/flags/img-flag-shop-flags-of-the-world-pakistan-flag-3-5.webp',
-                          name: 'Sajid',
-                        ),
-                      ],
-                    ),
-                    kHeight20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const CustomBeneficiaryCard(
-                          flagImageUrl: 'https://flagcdn.com/w40/ae.png',
-                          name: 'Ajmal',
-                        ),
-                        const CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/flags/27130.jpg',
-                          name: 'sujith',
-                        ),
-                        const CustomBeneficiaryCard(
-                          flagImageUrl:
-                              'assets/flags/vecteezy_national-flag-of-qatar-qatar-flag-waving-qatar-flag_.jpg',
-                          name: 'Sajid',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              //kHeight20,
               kHeight40,
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
@@ -254,6 +205,100 @@ class HomeTab extends StatelessWidget {
                 ),
               ),
               kHeight40,
+              kHeight30,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: CustomSectionHeader(
+                  title: 'Cards',
+                  actionLabel: 'Manage',
+                ),
+              ),
+              kHeight40,
+              Column(
+                children: [
+                  Container(
+                    height: 200,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        kWidth20,
+                        Row(
+                          children: [
+                            Image.asset('assets/cms_cards/MC002.png'),
+                            kWidth10,
+                            Image.asset('assets/cms_cards/TF002.png'),
+                            kWidth10,
+                            Image.asset('assets/cms_cards/MC001.png'),
+                            kWidth10,
+                            Image.asset('assets/cms_cards/MC003.png'),
+                            kWidth10,
+                            Image.asset('assets/cms_cards/TW001.png'),
+                            kWidth10,
+                            Image.asset('assets/cms_cards/RC001.png'),
+                            kWidth10,
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                ],
+              ),
+              kHeight40,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: CustomSectionHeader(
+                  title: 'Beneficiaries',
+                  actionLabel: 'Manage',
+                ),
+              ),
+              kHeight20,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'assets/flags/27130.jpg',
+                          name: 'Ajmal',
+                        ),
+                        const CustomBeneficiaryCard(
+                          flagImageUrl:
+                              'assets/flags/vecteezy_national-flag-of-qatar-qatar-flag-waving-qatar-flag_.jpg',
+                          name: 'Riyas',
+                        ),
+                        const CustomBeneficiaryCard(
+                          flagImageUrl:
+                              'assets/flags/img-flag-shop-flags-of-the-world-pakistan-flag-3-5.webp',
+                          name: 'Sajid',
+                        ),
+                      ],
+                    ),
+                    kHeight20,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'https://flagcdn.com/w40/ae.png',
+                          name: 'Ajmal',
+                        ),
+                        const CustomBeneficiaryCard(
+                          flagImageUrl: 'assets/flags/27130.jpg',
+                          name: 'sujith',
+                        ),
+                        const CustomBeneficiaryCard(
+                          flagImageUrl:
+                              'assets/flags/vecteezy_national-flag-of-qatar-qatar-flag-waving-qatar-flag_.jpg',
+                          name: 'Sajid',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+      
 
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
@@ -276,75 +321,7 @@ class HomeTab extends StatelessWidget {
                 ),
               ),
               kHeight40,
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: CustomSectionHeader(
-                  title: 'Cards',
-                  actionLabel: 'Manage',
-                ),
-              ),
-              kHeight40,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/cms_cards/TF002.png',
-                          flagHeight: 45,
-                          flagWidth: 70,
-                          flagBorderRadius: 10,
-                          name: 'Travel Flex',
-                        ),
-                        CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/cms_cards/MC002.png',
-                          flagHeight: 45,
-                          flagWidth: 70,
-                          flagBorderRadius: 10,
-                          name: 'Travel World',
-                        ),
-                        CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/cms_cards/MC001.png',
-                          flagHeight: 45,
-                          flagWidth: 70,
-                          flagBorderRadius: 10,
-                          name: 'Travel Card',
-                        ),
-                      ],
-                    ),
-                    kHeight20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/cms_cards/MC003.png',
-                          flagHeight: 45,
-                          flagWidth: 70,
-                          flagBorderRadius: 10,
-                          name: 'Paymax',
-                        ),
-                        CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/cms_cards/TW001.png',
-                          flagHeight: 45,
-                          flagWidth: 70,
-                          flagBorderRadius: 10,
-                          name: 'Travel World',
-                        ),
-                        CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/cms_cards/RC001.png',
-                          flagHeight: 45,
-                          flagWidth: 70,
-                          flagBorderRadius: 10,
-                          name: 'Travel Card',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              kHeight40,
+
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: CustomSectionHeader(
