@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/core/app_colors.dart';
+import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_icons.dart' show AppIcons;
 import 'package:lari_exchange/core/app_router.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
@@ -10,6 +12,7 @@ import 'package:lari_exchange/domain/remittance_report/model/remittancereport.pb
 import 'package:lari_exchange/domain/user/model/user.pb.dart' as user;
 import 'package:lari_exchange/infrastructure/user/remittance_report_repository/remittance_report_repository.dart';
 import 'package:lari_exchange/presentation/widgets/custom_section_header.dart';
+import 'package:lari_exchange/presentation/widgets/recent_transaction_tile.dart';
 
 class WalletTab extends StatefulWidget {
   const WalletTab({super.key});
@@ -222,7 +225,7 @@ class _WalletTabState extends State<WalletTab> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(18, 20, 18, 18),
                       decoration: BoxDecoration(
-                        color: kwhite,
+                        color: scheme.surface,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
@@ -269,16 +272,13 @@ class _WalletTabState extends State<WalletTab> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: CustomSectionHeader(
-                        title: 'Recent transactions',
-                        actionLabel: 'See all',
-                        onActionTap: () => context.push(AppRoutePaths.history),
-                      ),
+                    kHeight20,
+                    CustomSectionHeader(
+                      title: 'Recent transactions',
+                      actionLabel: 'See all',
+                      onActionTap: () => context.push(AppRoutePaths.history),
                     ),
-                    const SizedBox(height: 8),
+                    kHeight20,
                     if (_loadingTxns)
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 32),
@@ -298,7 +298,7 @@ class _WalletTabState extends State<WalletTab> {
                     else if (_recent.isEmpty)
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
+                          horizontal: 24,
                           vertical: 28,
                         ),
                         child: Container(
@@ -331,8 +331,8 @@ class _WalletTabState extends State<WalletTab> {
                     else
                       ..._recent.map(
                         (p) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: _RecentTxnCard(payload: p),
+                          padding: const EdgeInsets.only(bottom: 15,),
+                          child: RecentTxnCard(payload: p),
                         ),
                       ),
                   ],
@@ -439,155 +439,4 @@ class _CurrencyBalanceTile extends StatelessWidget {
   }
 }
 
-class _RecentTxnCard extends StatelessWidget {
-  const _RecentTxnCard({required this.payload});
 
-  final rem_report.Payload payload;
-
-  static Color _statusColor(String status, ColorScheme scheme) {
-    final s = status.toLowerCase();
-    if (s.contains('fail') ||
-        s.contains('cancel') ||
-        s.contains('reject') ||
-        s.contains('declin')) {
-      return scheme.error;
-    }
-    if (s.contains('pend') ||
-        s.contains('process') ||
-        s.contains('init') ||
-        s.contains('hold')) {
-      return const Color(0xFFE65100);
-    }
-    return const Color(0xFF2E7D32);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final status = payload.status.trim().isEmpty ? '—' : payload.status;
-    final title = payload.templateName.trim().isNotEmpty
-        ? payload.templateName
-        : (payload.service.trim().isNotEmpty ? payload.service : 'Transfer');
-    final subtitle = [
-      if (payload.date.isNotEmpty) payload.date,
-      if (payload.time.isNotEmpty) payload.time,
-      if (payload.benCurrencyCode.isNotEmpty) payload.benCurrencyCode,
-    ].join(' · ');
-
-    final amountParts = <String>[];
-    if (payload.fCAmount.isNotEmpty) {
-      amountParts.add(payload.fCAmount);
-    }
-    if (payload.lCAmount.isNotEmpty && payload.lCAmount != payload.fCAmount) {
-      amountParts.add('LC ${payload.lCAmount}');
-    }
-    final amountLine = amountParts.isEmpty
-        ? '—'
-        : amountParts.take(2).join(' · ');
-
-    final stColor = _statusColor(status, scheme);
-
-    return Material(
-      color: scheme.surface,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.35)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: korange.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    Icons.payments_outlined,
-                    color: scheme.primary,
-                    size: 22,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.body(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      if (subtitle.isNotEmpty) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          style: AppTextStyles.body(
-                            color: scheme.onSurfaceVariant,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      amountLine,
-                      style: AppTextStyles.body(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                      ),
-                      textAlign: TextAlign.end,
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: stColor.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        status,
-                        style: AppTextStyles.body(
-                          color: stColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            if (payload.ref.isNotEmpty) ...[
-              const SizedBox(height: 10),
-              Text(
-                'Ref ${payload.ref}',
-                style: AppTextStyles.body(
-                  color: scheme.onSurfaceVariant,
-                  fontSize: 11,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}

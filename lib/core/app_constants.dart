@@ -50,8 +50,6 @@ import 'app_theme/app_colors.dart';
 import 'app_universal.dart';
 import 'helpers.dart';
 
-
-
 // Heights
 SizedBox kHeight2 = SizedBox(height: 2);
 SizedBox kHeight4 = SizedBox(height: 4);
@@ -102,14 +100,18 @@ class EfrConstant {
   static const String flowLogTag = '[EFR_FLOW]';
   static const String apiBaseUrl = "https://devrhserv.server.eface.ae/LE";
   static const String pureLiveUrl = "https://gw.purelive.ae/api/";
-  static const String apiBaseUrljson = "https://efrhandler.uat.lariexchange.com";
-  static const String pureLiveUrljson = "https://efrhandler.uat.lariexchange.com";
+  static const String apiBaseUrljson =
+      "https://efrhandler.uat.lariexchange.com";
+  static const String pureLiveUrljson =
+      "https://efrhandler.uat.lariexchange.com";
   static const String rhServUsername = "dev.le@rhserv.ae";
   static const String rhServPassword = "Cdfd@5PLwd";
-  static const channelLiveness =
-      MethodChannel("com.fl.efr.mfl.sample.mfl_sample/liveness");
-  static const channelInitialize =
-      MethodChannel("com.fl.efr.mfl.sample.mfl_sample/initialize");
+  static const channelLiveness = MethodChannel(
+    "com.fl.efr.mfl.sample.mfl_sample/liveness",
+  );
+  static const channelInitialize = MethodChannel(
+    "com.fl.efr.mfl.sample.mfl_sample/initialize",
+  );
 
   static void logFlow(String message) {
     debugPrint('$flowLogTag $message');
@@ -122,10 +124,12 @@ class MdrReaderConstant {
   static const String ocrUrl = "https://ocruat1.rhserv.ae/";
   static const String rhServUsername = "dev.le@rhserv.ae";
   static const String rhServPassword = "Cdfd@5PLwd";
-  static const channelInitialize =
-      MethodChannel("com.fl.efr.mdr.sample.mdr_sample/initialize");
-  static const channelDocumentScan =
-      MethodChannel("com.fl.efr.mdr.sample.mdr_sample/document");
+  static const channelInitialize = MethodChannel(
+    "com.fl.efr.mdr.sample.mdr_sample/initialize",
+  );
+  static const channelDocumentScan = MethodChannel(
+    "com.fl.efr.mdr.sample.mdr_sample/document",
+  );
 }
 
 ///enum for otp register
@@ -158,8 +162,9 @@ class Constants {
       'https://stg-id.uaepass.ae/idshub/userinfo';
   static const String uaePassRedirectUri = 'https://stg-selfcare.uaepass.ae';
 
-  static Future<void> isPartialRegisteredDialog(
-      {required BuildContext context}) {
+  static Future<void> isPartialRegisteredDialog({
+    required BuildContext context,
+  }) {
     return Constants.showAlertDialog(
       noButton: false,
       context: context,
@@ -173,15 +178,19 @@ class Constants {
     );
   }
 
-  static Future<double?> getWalletToWalletCharge(
-      {String contact = "",
-      bool fromQr = false,
-      String qrReceiverType = ""}) async {
-    final walletBasedCharges ;
-   // await TranzkeyBloc().getWalletBasedCharges();
+  static Future<double?> getWalletToWalletCharge({
+    String contact = "",
+    bool fromQr = false,
+    String qrReceiverType = "",
+  }) async {
+    final walletBasedCharges;
+    // await TranzkeyBloc().getWalletBasedCharges();
 
     Map<String, String> types = await getSenderAndReceiverType(
-        contact: contact, fromQr: fromQr, qrReceiverType: qrReceiverType);
+      contact: contact,
+      fromQr: fromQr,
+      qrReceiverType: qrReceiverType,
+    );
     String senderType = types["senderType"] ?? "";
     String receiverType = types["receiverType"] ?? "";
 
@@ -198,10 +207,11 @@ class Constants {
     // }
   }
 
-  static Future<Map<String, String>> getSenderAndReceiverType(
-      {String contact = "",
-      bool fromQr = false,
-      String qrReceiverType = ""}) async {
+  static Future<Map<String, String>> getSenderAndReceiverType({
+    String contact = "",
+    bool fromQr = false,
+    String qrReceiverType = "",
+  }) async {
     final senderType = Universal.isCorporateUser ? "CORPORATE" : "CUSTOMER";
 
     String receiverType = "";
@@ -270,7 +280,8 @@ class Constants {
           final value = first['value'];
           final confidence = first['confidence'];
           print(
-              "🟩 $key → Value: $value | Source: $source | Confidence: $confidence");
+            "🟩 $key → Value: $value | Source: $source | Confidence: $confidence",
+          );
         } else {
           print("⚠️ $key → [No data]");
         }
@@ -285,11 +296,11 @@ class Constants {
   static final List<Map<String, String>> orgInfoLegalTypeItems = [
     {
       'en': 'Limited Liability Company LLC',
-      'ar': 'شركة ذات مسؤولية محدودة (ذ.م.م)'
+      'ar': 'شركة ذات مسؤولية محدودة (ذ.م.م)',
     },
     {
       'en': 'Limited Liability Partnership LLP',
-      'ar': 'شراكة ذات مسؤولية محدودة (ش.ذ.م.م)'
+      'ar': 'شراكة ذات مسؤولية محدودة (ش.ذ.م.م)',
     },
     {'en': 'Sole Trader - Sole Owner', 'ar': 'ملكية فردية - مالك وحيد'},
     {'en': 'Cooperative Society', 'ar': 'جمعية تعاونية'},
@@ -307,10 +318,7 @@ class Constants {
         (Universal.isAuthRespEmptyReg || Universal.isPartnerEmptyReg);
   }
 
-  static List<String> getCategory = [
-    "Normal",
-    "PEP",
-  ];
+  static List<String> getCategory = ["Normal", "PEP"];
   static List<String> getBranchRolls = ["Maker", "Checker"];
 
   static final List<Map<String, String>> orgInfoRegistrationTypeItems = [
@@ -319,8 +327,9 @@ class Constants {
     {'en': 'Commercial Free Zone', 'ar': 'منطقة حرة تجارية'},
   ];
 
-  static Future<bool> initializeContacts(
-      {required BuildContext context}) async {
+  static Future<bool> initializeContacts({
+    required BuildContext context,
+  }) async {
     // Request permission first (works for both Android and iOS)
     final bool hasPermission = await Constants.requestContactsPermission();
 
@@ -333,9 +342,9 @@ class Constants {
     }
   }
 
-//  static String getAppLogo(BuildContext context) {
-   // final langCode = context.read<LanguageBloc>().state.selectedLanguageCode;
-   // return langCode == 'ar' ? AppIcons.logoArabic : AppIcons.logo;
+  //  static String getAppLogo(BuildContext context) {
+  // final langCode = context.read<LanguageBloc>().state.selectedLanguageCode;
+  // return langCode == 'ar' ? AppIcons.logoArabic : AppIcons.logo;
   //}
 
   static Future<void> showAlertDialog({
@@ -363,11 +372,7 @@ class Constants {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  customIcons,
-                  size: 60,
-                  color: customIconColor,
-                ),
+                Icon(customIcons, size: 60, color: customIconColor),
                 SizedBox(height: 5.h),
                 // Text(
                 //   topMessage,
@@ -447,9 +452,7 @@ class Constants {
     print('fetchwalletaccount');
     // Fetch wallet account ID on initial load
     _fetchWalletAccountId();
-    context.read<SignInBloc>().add(
-          GetCorporateEvent(),
-        );
+    context.read<SignInBloc>().add(GetCorporateEvent());
     // context.read<AccountSelectionBloc>().add(
     //       FetchCorrespondentsEvent(userId: Universal.regId),
     //     );
@@ -458,7 +461,7 @@ class Constants {
   static Future<void> _fetchWalletAccountId() async {
     try {
       final userRepo = UserRepository();
-      final walletPayload ; 
+      final walletPayload;
       //await userRepo.getCusWalletAcc();
       // if (walletPayload.accId.isNotEmpty) {
       //   // Universal.walletAccountId = walletPayload.accId;
@@ -471,10 +474,7 @@ class Constants {
 
   static LinearGradient buildGradientMoltenGoldBlaze() {
     return const LinearGradient(
-      colors: [
-        Color(0xFFFF8F00),
-        Color(0xFFFF8F00),
-      ],
+      colors: [Color(0xFFFF8F00), Color(0xFFFF8F00)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     );
@@ -492,7 +492,8 @@ class Constants {
   }
 
   static LinearGradient buildAppGradientFieryHorizonDarker(
-      BuildContext context) {
+    BuildContext context,
+  ) {
     final theme = Theme.of(context);
     final appColor = theme.extension<AppColors>()!;
 
@@ -579,16 +580,20 @@ class Constants {
     try {
       // Combine into a valid DateTime format
       final combinedString = "$date $time";
-      final parsedDateTime =
-          DateFormat("yyyy-MM-dd hh:mm a").parse(combinedString);
+      final parsedDateTime = DateFormat(
+        "yyyy-MM-dd hh:mm a",
+      ).parse(combinedString);
       return parsedDateTime.toIso8601String(); // Convert to ISO8601 string
     } catch (e) {
       return null; // Handle invalid format
     }
   }
 
-  static Future<void> launchSMS(String phoneNumber, String message,
-      {BuildContext? context}) async {
+  static Future<void> launchSMS(
+    String phoneNumber,
+    String message, {
+    BuildContext? context,
+  }) async {
     final sanitizedPhone = phoneNumber.trim();
     if (sanitizedPhone.isEmpty) {
       debugPrint('launchSMS skipped: empty phone number');
@@ -604,8 +609,10 @@ class Constants {
     try {
       final canLaunchSms = await canLaunchUrl(smsUri);
       if (canLaunchSms) {
-        final launched =
-            await launchUrl(smsUri, mode: LaunchMode.externalApplication);
+        final launched = await launchUrl(
+          smsUri,
+          mode: LaunchMode.externalApplication,
+        );
         if (launched) return;
       }
 
@@ -624,7 +631,9 @@ class Constants {
   }
 
   static KeyboardActionsConfig buildKeyboardLayout(
-      BuildContext context, List<FocusNode> focusNodes) {
+    BuildContext context,
+    List<FocusNode> focusNodes,
+  ) {
     return KeyboardActionsConfig(
       keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
       keyboardBarColor: Colors.grey[200],
@@ -657,19 +666,19 @@ class Constants {
   static bool logOutIfSessionExpired(GrpcError e) {
     if ("${e.message}".contains(Constants.expiredMessageKey)) {
       Constants.showCustomPopupMessage(
-          'Error', e.message ?? "Your Session has expired",
-          additionalActionInButton: () {
-     //   Get.offAll(() => LoginScreen());
-      });
+        'Error',
+        e.message ?? "Your Session has expired",
+        additionalActionInButton: () {
+          //   Get.offAll(() => LoginScreen());
+        },
+      );
       return true;
     }
     return false;
   }
 
   static bottomSpacerRegistration() {
-    return SizedBox(
-      height: 30,
-    );
+    return SizedBox(height: 30);
   }
 
   static bottomSheetPadding({required child}) {
@@ -812,14 +821,16 @@ class Constants {
 
     if (result.isPermanentlyDenied || result.isRestricted) {
       await Constants.showCustomPopupTwoMessage(
-          "camera_required", 'camera_permanent_denied',
-          rightButtonOnClick: () async {
-        Get.back();
-        await openAppSettings();
-      },
-          fixedWidth: false,
-          leftButtonText: 'Cancel',
-          rightButtonText: " ${'go_to_settings'} ");
+        "camera_required",
+        'camera_permanent_denied',
+        rightButtonOnClick: () async {
+          Get.back();
+          await openAppSettings();
+        },
+        fixedWidth: false,
+        leftButtonText: 'Cancel',
+        rightButtonText: " ${'go_to_settings'} ",
+      );
     }
 
     return false;
@@ -834,13 +845,16 @@ class Constants {
 
     if (result.isPermanentlyDenied || result.isRestricted) {
       await Constants.showCustomPopupTwoMessage(
-          "mic_required", 'mic_permanent_denied', rightButtonOnClick: () async {
-        Get.back();
-        await openAppSettings();
-      },
-          fixedWidth: false,
-          leftButtonText: 'Cancel',
-          rightButtonText: " ${'go_to_settings'} ");
+        "mic_required",
+        'mic_permanent_denied',
+        rightButtonOnClick: () async {
+          Get.back();
+          await openAppSettings();
+        },
+        fixedWidth: false,
+        leftButtonText: 'Cancel',
+        rightButtonText: " ${'go_to_settings'} ",
+      );
     }
 
     return false;
@@ -858,11 +872,13 @@ class Constants {
         return true;
       } else if (result.isPermanentlyDenied) {
         Constants.showCustomPopupMessage(
-            "Error", "Contact permission is permanently denied",
-            additionalActionInButton: () {
-          Get.back();
-          openAppSettings();
-        });
+          "Error",
+          "Contact permission is permanently denied",
+          additionalActionInButton: () {
+            Get.back();
+            openAppSettings();
+          },
+        );
         return false;
       } else {
         debugPrint("Contacts permission denied");
@@ -872,11 +888,13 @@ class Constants {
 
     if (status.isPermanentlyDenied) {
       Constants.showCustomPopupMessage(
-          "Error", "Contact permission is permanently denied",
-          additionalActionInButton: () {
-        Get.back();
-        openAppSettings();
-      });
+        "Error",
+        "Contact permission is permanently denied",
+        additionalActionInButton: () {
+          Get.back();
+          openAppSettings();
+        },
+      );
       return false;
     }
 
@@ -934,9 +952,7 @@ class Constants {
   }
 
   static bottomBarHeight() {
-    return SizedBox(
-      height: kBottomNavigationBarHeight + 30.sp,
-    );
+    return SizedBox(height: kBottomNavigationBarHeight + 30.sp);
   }
 
   static LinearGradient buildAppGradientSwapOrange(BuildContext context) {
@@ -946,7 +962,7 @@ class Constants {
     return LinearGradient(
       colors: [
         appColor.appPrimary.withOpacity(0.9),
-        appColor.appPrimaryDark.withOpacity(0.9)
+        appColor.appPrimaryDark.withOpacity(0.9),
       ],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
@@ -999,10 +1015,7 @@ class Constants {
     return RadialGradient(
       center: Alignment.center,
       radius: 1.0,
-      colors: [
-        appColor.appPrimary20,
-        appColor.appPrimary.withOpacity(0.7),
-      ],
+      colors: [appColor.appPrimary20, appColor.appPrimary.withOpacity(0.7)],
       stops: const [0.6, 1.0],
     );
   }
@@ -1025,8 +1038,9 @@ class Constants {
     final DateFormat inputFormat = DateFormat("hh:mm a"); // 12-hour format
     final DateFormat outputFormat = DateFormat("HH:mm"); // 24-hour format
 
-    return outputFormat
-        .format(inputFormat.parse(time)); // Convert to 24-hour format
+    return outputFormat.format(
+      inputFormat.parse(time),
+    ); // Convert to 24-hour format
   }
 
   // static Future<bool> authWithSecondFactor(
@@ -1119,16 +1133,20 @@ class Constants {
   //   }
   // }
 
-  static Future<user.Response?> verifyBiometricPin(
-      {required String pin,
-      required bool isBiometric,
-      required String platform}) async {
+  static Future<user.Response?> verifyBiometricPin({
+    required String pin,
+    required bool isBiometric,
+    required String platform,
+  }) async {
     user.Response? response;
     UserRepository userRepo = UserRepository();
 
     try {
       response = await userRepo.verifyTransactionPin(
-          pin: pin, isBiometric: isBiometric, platform: platform);
+        pin: pin,
+        isBiometric: isBiometric,
+        platform: platform,
+      );
     } on SocketException catch (e) {
       ConstantException.handleSocketException(error: e);
     } on TimeoutException catch (e) {
@@ -1150,7 +1168,7 @@ class Constants {
         appColor.appPrimaryDarker,
         appColor.appPrimary,
         appColor.appPrimarySecondary,
-        appColor.backgroundColor // #FFAD33 (lighter, left side)
+        appColor.backgroundColor, // #FFAD33 (lighter, left side)
       ],
       begin: Alignment.topRight, // Starts at top-right corner
       end: Alignment.bottomLeft, // Ends at bottom-left corner
@@ -1211,10 +1229,7 @@ class Constants {
     final appColor = theme.extension<AppColors>()!;
 
     return LinearGradient(
-      colors: [
-        appColor.white,
-        appColor.white,
-      ],
+      colors: [appColor.white, appColor.white],
       begin: Alignment.bottomRight, // Starts at top-right corner
       end: Alignment.topLeft, // Ends at bottom-left corner
       stops: [0.5, 1.0], // Ensures a sharp transition
@@ -1241,22 +1256,33 @@ class Constants {
   //   );
   // }
 
-  static String changeDateFormat(
-      {required String inputDate,
-      required String inputFormat,
-      required String outputFormat}) {
+  static String changeDateFormat({
+    required String inputDate,
+    required String inputFormat,
+    required String outputFormat,
+  }) {
     try {
       DateFormat inputDateFormat = DateFormat(inputFormat);
       DateFormat outputDateFormat = DateFormat(outputFormat);
-      DateTime? date = inputDateFormat.tryParse(inputDate);
+      DateTime? date;
+
+      try {
+        date = inputDateFormat.parse(inputDate);
+      } catch (e) {
+        date = null;
+      }
       return date != null ? outputDateFormat.format(date) : '';
     } catch (e) {
       return '';
     }
   }
 
-  static void displaySnackBar(String message, BuildContext context,
-      {String? actionMessage, VoidCallback? onClick}) {
+  static void displaySnackBar(
+    String message,
+    BuildContext context, {
+    String? actionMessage,
+    VoidCallback? onClick,
+  }) {
     final AppColors appColor = Theme.of(context).extension<AppColors>()!;
 
     final snackBar = SnackBar(
@@ -1285,13 +1311,14 @@ class Constants {
             ),
             if (actionMessage != null)
               TextButton(
-                onPressed: onClick ??
+                onPressed:
+                    onClick ??
                     () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
                 child: Text(
                   actionMessage,
                   style: const TextStyle(color: Colors.white),
                 ),
-              )
+              ),
           ],
         ),
       ),
@@ -1351,9 +1378,7 @@ class Constants {
           elevation: 20,
           child: Container(
             color: Colors.white,
-            constraints: BoxConstraints(
-              maxWidth: 350.w,
-            ),
+            constraints: BoxConstraints(maxWidth: 350.w),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1377,7 +1402,9 @@ class Constants {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
+                        vertical: 8.0,
+                        horizontal: 5.0,
+                      ),
                       child: Text(
                         title,
                         textAlign: TextAlign.center,
@@ -1392,7 +1419,9 @@ class Constants {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 3.0, horizontal: 3.0),
+                    vertical: 3.0,
+                    horizontal: 3.0,
+                  ),
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -1614,20 +1643,23 @@ class Constants {
     );
   }
 
-  static Future<dynamic> showCustomPopupMessage(String? title, String message,
-      {SnackPosition? snackPosition,
-      Duration? duration,
-      Color? bgColor,
-      Color? textColor,
-      Widget? mainButton,
-      List<Widget>? actions,
-      String? header,
-      String? lottieAnimation,
-      Size? lottieSize,
-      bool showIcon = true,
-      ErrorType errorType = ErrorType.defaultError,
-      VoidCallback? additionalActionInButton,
-      String? customTextForButton}) async {
+  static Future<dynamic> showCustomPopupMessage(
+    String? title,
+    String message, {
+    SnackPosition? snackPosition,
+    Duration? duration,
+    Color? bgColor,
+    Color? textColor,
+    Widget? mainButton,
+    List<Widget>? actions,
+    String? header,
+    String? lottieAnimation,
+    Size? lottieSize,
+    bool showIcon = true,
+    ErrorType errorType = ErrorType.defaultError,
+    VoidCallback? additionalActionInButton,
+    String? customTextForButton,
+  }) async {
     if (mainButton != null) actions?.add(mainButton);
     if (Get.isDialogOpen ?? false) {
       Get.back();
@@ -1663,10 +1695,11 @@ class Constants {
             children: [
               if (lottieAnimation != null && lottieAnimation.isNotEmpty)
                 Lottie.asset(
-                    height: lottieSize?.height ?? 100.h,
-                    repeat: false,
-                    width: lottieSize?.width ?? 100.w,
-                    lottieAnimation),
+                  height: lottieSize?.height ?? 100.h,
+                  repeat: false,
+                  width: lottieSize?.width ?? 100.w,
+                  lottieAnimation,
+                ),
               if (showIcon)
                 getErrorWidgetByType(
                   title!.toLowerCase().contains("success")
@@ -1697,7 +1730,7 @@ class Constants {
                 child: ElevatedButton(
                   onPressed: () {
                     if (isSessionExpired(message)) {
-                  //    Get.offAll(LoginScreen());
+                      //    Get.offAll(LoginScreen());
                     } else {
                       Get.close(1);
                       if (additionalActionInButton != null) {
@@ -1709,7 +1742,9 @@ class Constants {
                     backgroundColor: appColor.appPrimary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 16),
+                      horizontal: 24,
+                      vertical: 16,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -1750,10 +1785,7 @@ class Constants {
     return "https://flagsapi.com/$resolvedCode/shiny/48.png";
   }
 
-  static Widget getErrorWidgetByType(
-    ErrorType error, [
-    String? title,
-  ]) {
+  static Widget getErrorWidgetByType(ErrorType error, [String? title]) {
     IconData icon = Icons.error_outline;
     Color mainColor = const Color(0xffe12d3a);
     String errorHead = 'Error';
@@ -1796,15 +1828,13 @@ class Constants {
       children: [
         Container(
           decoration: BoxDecoration(
-              shape: BoxShape.circle, color: mainColor.withOpacity(0.7)),
+            shape: BoxShape.circle,
+            color: mainColor.withOpacity(0.7),
+          ),
           margin: const EdgeInsets.only(right: 10),
           height: 40,
           width: 40,
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 25,
-          ),
+          child: Icon(icon, color: Colors.white, size: 25),
         ),
         Text(
           title ?? errorHead,
@@ -1920,9 +1950,7 @@ class BiometricHelper {
             signInTitle: 'Biometric Authentication Required',
             cancelButton: 'Cancel',
           ),
-          IOSAuthMessages(
-            cancelButton: 'Cancel',
-          ),
+          IOSAuthMessages(cancelButton: 'Cancel'),
         ],
       );
 
@@ -1941,15 +1969,17 @@ class BiometricHelper {
   /// Helper: show retry SnackBar
   static void _showRetrySnack(BuildContext context, String message) {
     if (!context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Retry',
-        onPressed: () {
-          authenticate(context: context);
-        },
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () {
+            authenticate(context: context);
+          },
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -1959,16 +1989,15 @@ extension StringCasingExtension on String {
   String toCapitalized() =>
       length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
 
-  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
-      .split(' ')
-      .map((str) => str.toCapitalized())
-      .join(' ');
+  String toTitleCase() => replaceAll(
+    RegExp(' +'),
+    ' ',
+  ).split(' ').map((str) => str.toCapitalized()).join(' ');
 
-  String toTitleCaseHyphen() => replaceAll(RegExp('-'), ' ')
-      .split(' ')
-      .map((str) => str.toCapitalized())
-      .join(' ')
-      .replaceAll(" ", "-");
+  String toTitleCaseHyphen() => replaceAll(
+    RegExp('-'),
+    ' ',
+  ).split(' ').map((str) => str.toCapitalized()).join(' ').replaceAll(" ", "-");
 
   String toInitials() {
     List<String> words = split(' ');
@@ -2004,8 +2033,8 @@ extension StringCasingExtension on String {
   }
 }
 
-typedef CheckIfTemplateCallback = void Function(
-    String, String, String, String, bool);
+typedef CheckIfTemplateCallback =
+    void Function(String, String, String, String, bool);
 
 class CustomDecoration {
   static final BoxDecoration iconBoxGradient = BoxDecoration(
