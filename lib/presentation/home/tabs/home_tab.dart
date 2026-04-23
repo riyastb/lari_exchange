@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/core/app_colors.dart';
+import 'package:lari_exchange/core/app_icons.dart';
 import 'package:lari_exchange/core/app_router.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
@@ -62,7 +63,7 @@ class HomeTab extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const CustomIconTile(
-                      icon: Icons.qr_code_2_rounded,
+                      icon: Icons.qr_code_scanner_outlined,
                       label: 'Scan Any\n QR Code',
                     ),
 
@@ -130,84 +131,84 @@ class HomeTab extends StatelessWidget {
                   actionLabel: 'Manage',
                 ),
               ),
-              kHeight40,
+              kHeight30,
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
-                    Row(
+                    Row(crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
                         Expanded(
                           child: CustomCircleIconTile(
-                            icon: Icons.electric_bolt_outlined,
+                            svgAsset: AppIcons.electricityIcon,
+
                             label: 'Electricity',
-                            value: 'AED 245',
                           ),
                         ),
                         Expanded(
                           child: CustomCircleIconTile(
-                            icon: Icons.water_drop_outlined,
+                            svgAsset: AppIcons.waterIcon,
                             label: 'Water',
-                            value: 'AED 89',
+                          
                           ),
                         ),
                         Expanded(
                           child: CustomCircleIconTile(
-                            icon: Icons.phone_iphone_outlined,
-                            label: 'Mobile',
-                            value: 'AED 150',
+                            svgAsset: AppIcons.phoneIcon,
+                            label: 'Mobile\nRechange',
+                            //  value: 'AED 150',
                           ),
                         ),
                         Expanded(
                           child: CustomCircleIconTile(
-                            icon: Icons.wifi_outlined,
+                            svgAsset: AppIcons.wifibillIcon,
                             label: 'Internet',
-                            value: 'AED 199',
+                  
                           ),
                         ),
                       ],
                     ),
-                    kHeight20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Expanded(
-                          child: CustomCircleIconTile(
-                            icon: Icons.local_fire_department_outlined,
-                            label: 'Gas',
-                            value: 'AED 120',
-                          ),
-                        ),
-                        Expanded(
-                          child: CustomCircleIconTile(
-                            icon: Icons.tv_outlined,
-                            label: 'TV / DTH',
-                            value: 'AED 75',
-                          ),
-                        ),
-                        Expanded(
-                          child: CustomCircleIconTile(
-                            icon: Icons.phone_in_talk_outlined,
-                            label: 'Landline',
-                            value: 'AED 45',
-                          ),
-                        ),
-                        Expanded(
-                          child: CustomCircleIconTile(
-                            icon: Icons.credit_card_outlined,
-                            label: 'Cards',
-                            value: 'AED 1,240',
-                          ),
-                        ),
-                      ],
-                    ),
+                 //   kHeight20,
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: const [
+                    //     Expanded(
+                    //       child: CustomCircleIconTile(
+                    //         icon: Icons.local_fire_department_outlined,
+                    //         label: 'Gas',
+                    //         value: 'AED 120',
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: CustomCircleIconTile(
+                    //         icon: Icons.tv_outlined,
+                    //         label: 'TV / DTH',
+                    //         value: 'AED 75',
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: CustomCircleIconTile(
+                    //         icon: Icons.phone_in_talk_outlined,
+                    //         label: 'Landline',
+                    //         value: 'AED 45',
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: CustomCircleIconTile(
+                    //         icon: Icons.credit_card_outlined,
+                    //         label: 'Cards',
+                    //         value: 'AED 1,240',
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
-              kHeight40,
               kHeight30,
+            //  kHeight30,
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: CustomSectionHeader(
@@ -243,7 +244,6 @@ class HomeTab extends StatelessWidget {
                       ],
                     ),
                   ),
-
                 ],
               ),
               kHeight40,
@@ -301,8 +301,8 @@ class HomeTab extends StatelessWidget {
                   ],
                 ),
               ),
-      
-kHeight30,
+
+              kHeight30,
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: CustomSectionHeader(

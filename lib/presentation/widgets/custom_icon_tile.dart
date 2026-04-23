@@ -26,6 +26,7 @@ class CustomIconTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -34,9 +35,9 @@ class CustomIconTile extends StatelessWidget {
           width: boxSize,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
-            color: backgroundColor,
+            color: scheme.surface,
           ),
-          child: Icon(icon, color: iconColor),
+          child: Icon(icon, color: iconColor, size: boxSize * 0.4),
         ),
         SizedBox(height: gap),
         Text(

@@ -100,16 +100,21 @@ class MainShell extends StatelessWidget {
           color: kwhite.withValues(alpha: 0.94),
           borderRadius: BorderRadius.circular(28),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            ),
-            BoxShadow(
-              color: korange.withValues(alpha: 0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
+             BoxShadow(
+            color: Colors.black.withOpacity(0.10),
+            blurRadius: 1,
+            offset: const Offset(0, 2),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 3,
+            offset: const Offset(-1, 1),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 3,
+            offset: const Offset(1, 1),
+          ),
           ],
         ),
         child: Padding(

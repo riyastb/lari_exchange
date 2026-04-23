@@ -331,7 +331,7 @@ class _WalletTabState extends State<WalletTab> {
                     else
                       ..._recent.map(
                         (p) => Padding(
-                          padding: const EdgeInsets.only(bottom: 15,),
+                          padding: const EdgeInsets.only(bottom: 15),
                           child: RecentTxnCard(payload: p),
                         ),
                       ),
@@ -438,5 +438,3 @@ class _CurrencyBalanceTile extends StatelessWidget {
     );
   }
 }
-
-

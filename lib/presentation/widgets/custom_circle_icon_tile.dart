@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 
-/// Circular tinted avatar with icon and caption below (e.g. bills grid).
+
 class CustomCircleIconTile extends StatelessWidget {
   const CustomCircleIconTile({
     super.key,
-    required this.icon,
+    this.icon,
+    this.svgPicture,
+    this.svgAsset,
+    this.imageAsset,
     required this.label,
     this.value,
     this.radius = 28,
-    this.backgroundColor = korangemild,
+    this.backgroundColor = kwhite,
     this.iconColor = korange,
     this.labelStyle,
     this.valueStyle,
-    this.gap = 10,
+    this.gap = 5,
     this.valueGap = 4,
   });
 
-  final IconData icon;
+  final IconData? icon;
+
+  final Widget? svgPicture;
+
+  final String? svgAsset;
+
+  final String? imageAsset;
   final String label;
-  /// Optional line under [label], e.g. amount or due date.
+
   final String? value;
   final double radius;
   final Color backgroundColor;
@@ -30,15 +40,50 @@ class CustomCircleIconTile extends StatelessWidget {
   final double gap;
   final double valueGap;
 
+  Widget _circleContent() {
+    final inset = radius * 0.5;
+    if (svgPicture != null) {
+      return Padding(
+        padding: EdgeInsets.all(inset),
+        child: svgPicture,
+      );
+    }
+    final svgPath = svgAsset;
+    if (svgPath != null && svgPath.isNotEmpty) {
+      return Padding(
+        padding: EdgeInsets.all(inset),
+        child: SvgPicture.asset(
+          svgPath,
+         // colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+        ),
+      );
+    }
+    final imgPath = imageAsset;
+    if (imgPath != null && imgPath.isNotEmpty) {
+      return Padding(
+        padding: EdgeInsets.all(radius * 0.25),
+        child: Image.asset(imgPath, fit: BoxFit.contain),
+      );
+    }
+    return Icon(icon ?? Icons.help_outline, color: iconColor);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CircleAvatar(
-          backgroundColor: backgroundColor,
-          radius: radius,
-          child: Icon(icon, color: iconColor),
+        Container(
+          width:60,
+          height:60 ,
+        
+          decoration: BoxDecoration(
+            color: backgroundColor,
+           // shape: BoxShape.circle,
+           border: Border.all(color: kblack, width: 0.5),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: _circleContent(),
         ),
         SizedBox(height: gap),
         Text(

@@ -48,7 +48,7 @@ class CustomSearchField extends StatelessWidget {
         textAlignVertical: TextAlignVertical.center,
         style: AppTextStyles.body(),
         decoration: InputDecoration(
-          hintText: "Pay by name or ID Number",
+          hintText: "Search by name or contact",
           hintStyle: AppTextStyles.body(),
           border: InputBorder.none,
           isDense: true,
