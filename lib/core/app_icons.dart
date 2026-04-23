@@ -12,6 +12,8 @@ class AppIcons {
   static const String phoneIcon='assets/icons/mobile.svg';
   static const String electricityIcon='assets/icons/electrical-energy.svg';
   static const String waterIcon='assets/icons/faucet.svg';
-  static const String wifibillIcon='assets/icons/invoice.svg';
-
+  static const String wifibillIcon = 'assets/icons/invoice.svg';
+  static const String emptyDataIllustration = 'assets/icons/folder.svg';
+  static const String errorStateIllustration = 'assets/icons/error_state.svg';
+  static const String corporateIcon = 'assets/icons/company.svg';
 }

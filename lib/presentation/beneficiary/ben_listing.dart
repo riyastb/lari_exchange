@@ -7,9 +7,10 @@ import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 import 'package:lari_exchange/domain/beneficiaries/model/beneficiary.pb.dart'
     as beneficiaries;
+import 'package:lari_exchange/presentation/beneficiary/loader/ben_loader_tile.dart';
 import 'package:lari_exchange/presentation/beneficiary/widgets/beneficiary_list_tile.dart';
 import 'package:lari_exchange/presentation/widgets/custom_search.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:lari_exchange/presentation/widgets/illustration_message.dart';
 
 class BenListing extends StatelessWidget {
   const BenListing({super.key});
@@ -225,7 +226,7 @@ class _BenListingContentState extends State<_BenListingContent> {
                         a.listDisplay != b.listDisplay,
                     builder: (context, state) {
                       if (state.isLoading) {
-                        return const _BeneficiaryListSkeleton();
+                        return const BeneficiaryListSkeleton();
                       }
 
                       final filtered = state.listDisplay
@@ -233,7 +234,17 @@ class _BenListingContentState extends State<_BenListingContent> {
                           .toList();
 
                       if (filtered.isEmpty) {
-                        return _EmptyBeneficiaries(hasQuery: _query.isNotEmpty);
+                        return _query.isNotEmpty
+                            ? IllustrationMessage.emptyData(
+                                title: 'No matches',
+                                message:
+                                    'Try a different search term or clear the filter.',
+                              )
+                            : IllustrationMessage.emptyData(
+                                title: 'No beneficiaries yet',
+                                message:
+                                    'When you add beneficiaries, they will appear here.',
+                              );
                       }
 
                       return ListView.separated(
@@ -298,82 +309,6 @@ class _ModeChip extends StatelessWidget {
   }
 }
 
-/// Same cell layout as [BeneficiaryListTile] via [BeneficiaryListTileSkeleton], gray shimmer.
-class _BeneficiaryListSkeleton extends StatelessWidget {
-  const _BeneficiaryListSkeleton();
 
-  @override
-  Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: true,
-      ignoreContainers: true,
-      effect: const ShimmerEffect(
-        baseColor: Color(0xFFC8C8C8),
-        highlightColor: Color(0xFFE8E8E8),
-      ),
-      child: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
-        itemCount: 7,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (context, _) {
-          return const BeneficiaryListTileSkeleton();
-        },
-      ),
-    );
-  }
-}
 
-class _EmptyBeneficiaries extends StatelessWidget {
-  const _EmptyBeneficiaries({required this.hasQuery});
 
-  final bool hasQuery;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(22),
-              decoration: BoxDecoration(
-                color: korangemild,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                hasQuery
-                    ? Icons.search_off_rounded
-                    : Icons.people_outline_rounded,
-                size: 48,
-                color: korange,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              hasQuery ? 'No matches' : 'No beneficiaries yet',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.body(
-                fontWeight: FontWeight.w800,
-                fontSize: 18,
-              ),
-            ),
-            kHeight8,
-            Text(
-              hasQuery
-                  ? 'Try a different search term or clear the filter.'
-                  : 'When you add beneficiaries, they will appear here.',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.body(
-                color: scheme.onSurfaceVariant,
-                fontSize: 14,
-              ).copyWith(height: 1.35),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

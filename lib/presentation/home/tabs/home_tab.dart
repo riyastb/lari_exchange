@@ -1,17 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lari_exchange/application/beneficiary_listing/beneficiary_listing_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
+import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_icons.dart';
 import 'package:lari_exchange/core/app_router.dart';
-import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
-import 'package:lari_exchange/presentation/widgets/custom_search.dart';
-import 'package:lari_exchange/presentation/widgets/custom_icon_tile.dart';
+import 'package:lari_exchange/presentation/beneficiary/beneficiary_icon_util.dart';
+import 'package:lari_exchange/presentation/beneficiary/widgets/beneficiary_list_tile.dart';
+import 'package:lari_exchange/presentation/home/widgets/ben_home_listing.dart';
 import 'package:lari_exchange/presentation/widgets/custom_beneficiary_card.dart';
-import 'package:lari_exchange/presentation/widgets/custom_pill_row.dart';
 import 'package:lari_exchange/presentation/widgets/custom_circle_icon_tile.dart';
+import 'package:lari_exchange/presentation/widgets/custom_icon_tile.dart';
+import 'package:lari_exchange/presentation/widgets/custom_pill_row.dart';
+import 'package:lari_exchange/presentation/widgets/custom_search.dart';
 import 'package:lari_exchange/presentation/widgets/custom_section_header.dart';
 
 class HomeTab extends StatelessWidget {
@@ -229,13 +234,15 @@ class HomeTab extends StatelessWidget {
                           children: [
                             Image.asset('assets/cms_cards/MC002.png'),
                             kWidth10,
-                            Image.asset('assets/cms_cards/TF002.png'),
+                             Image.asset('assets/cms_cards/TW001.png'),
+                          
                             kWidth10,
-                            Image.asset('assets/cms_cards/MC001.png'),
+                                Image.asset('assets/cms_cards/TF002.png'),
+                      
                             kWidth10,
                             Image.asset('assets/cms_cards/MC003.png'),
                             kWidth10,
-                            Image.asset('assets/cms_cards/TW001.png'),
+                               Image.asset('assets/cms_cards/MC001.png'),
                             kWidth10,
                             Image.asset('assets/cms_cards/RC001.png'),
                             kWidth10,
@@ -258,47 +265,11 @@ class HomeTab extends StatelessWidget {
               kHeight20,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/flags/27130.jpg',
-                          name: 'Ajmal',
-                        ),
-                        const CustomBeneficiaryCard(
-                          flagImageUrl:
-                              'assets/flags/vecteezy_national-flag-of-qatar-qatar-flag-waving-qatar-flag_.jpg',
-                          name: 'Riyas',
-                        ),
-                        const CustomBeneficiaryCard(
-                          flagImageUrl:
-                              'assets/flags/img-flag-shop-flags-of-the-world-pakistan-flag-3-5.webp',
-                          name: 'Sajid',
-                        ),
-                      ],
-                    ),
-                    kHeight20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const CustomBeneficiaryCard(
-                          flagImageUrl: 'https://flagcdn.com/w40/ae.png',
-                          name: 'Ajmal',
-                        ),
-                        const CustomBeneficiaryCard(
-                          flagImageUrl: 'assets/flags/27130.jpg',
-                          name: 'sujith',
-                        ),
-                        const CustomBeneficiaryCard(
-                          flagImageUrl:
-                              'assets/flags/vecteezy_national-flag-of-qatar-qatar-flag-waving-qatar-flag_.jpg',
-                          name: 'Sajid',
-                        ),
-                      ],
-                    ),
-                  ],
+                child: BlocProvider(
+                  lazy: false,
+                  create: (_) => BeneficiaryListingBloc()
+                    ..add(const GetBeneficiariesEvent('0')),
+                  child: const HomeBeneficiariesRow(),
                 ),
               ),
 
@@ -317,7 +288,7 @@ class HomeTab extends StatelessWidget {
                 child: Row(
                   children: [
                     CustomCircleIconTile(
-                      icon: Icons.corporate_fare_outlined,
+                   svgAsset: AppIcons.corporateIcon,
                       label: 'Wonderland',
                     ),
                   ],
@@ -325,73 +296,73 @@ class HomeTab extends StatelessWidget {
               ),
               kHeight40,
 
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: CustomSectionHeader(
-                  title: 'Employees',
-                  actionLabel: 'Manage',
-                ),
-              ),
-              kHeight40,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: CustomCircleIconTile(
-                        icon: Icons.person_rounded,
-                        label: 'Sumeesh',
-                      ),
-                    ),
-                    Expanded(
-                      child: CustomCircleIconTile(
-                        icon: Icons.person_rounded,
-                        label: 'Ross',
-                      ),
-                    ),
-                    Expanded(
-                      child: CustomCircleIconTile(
-                        icon: Icons.person_rounded,
-                        label: 'Safwan',
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.grey.shade300,
-                                width: 1,
-                              ),
-                            ),
-                            child: CircleAvatar(
-                              radius: 24,
-                              backgroundColor: Colors.white,
-                              child: Center(
-                                child: Image.asset(
-                                  'assets/flags/down.png',
-                                  height: 22,
-                                ),
-                              ),
-                            ),
-                          ),
-                          kHeight4,
-                          Text(
-                            'More',
-                            style: AppTextStyles.body(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 24),
+              //   child: CustomSectionHeader(
+              //     title: 'Employees',
+              //     actionLabel: 'Manage',
+              //   ),
+              // ),
+              // kHeight40,
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 24),
+              //   child: Row(
+              //     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Expanded(
+              //         child: CustomCircleIconTile(
+              //           icon: Icons.person_rounded,
+              //           label: 'Sumeesh',
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: CustomCircleIconTile(
+              //           icon: Icons.person_rounded,
+              //           label: 'Ross',
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: CustomCircleIconTile(
+              //           icon: Icons.person_rounded,
+              //           label: 'Safwan',
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               padding: const EdgeInsets.all(2),
+              //               decoration: BoxDecoration(
+              //                 shape: BoxShape.circle,
+              //                 border: Border.all(
+              //                   color: Colors.grey.shade300,
+              //                   width: 1,
+              //                 ),
+              //               ),
+              //               child: CircleAvatar(
+              //                 radius: 24,
+              //                 backgroundColor: Colors.white,
+              //                 child: Center(
+              //                   child: Image.asset(
+              //                     'assets/flags/down.png',
+              //                     height: 22,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //             kHeight4,
+              //             Text(
+              //               'More',
+              //               style: AppTextStyles.body(
+              //                 fontWeight: FontWeight.w600,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               kHeight100,
             ],
@@ -401,3 +372,4 @@ class HomeTab extends StatelessWidget {
     );
   }
 }
+
