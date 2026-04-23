@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/core/app_colors.dart';
+import 'package:lari_exchange/core/app_router.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 import 'package:lari_exchange/presentation/widgets/custom_search.dart';
@@ -245,11 +247,12 @@ class HomeTab extends StatelessWidget {
                 ],
               ),
               kHeight40,
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: CustomSectionHeader(
                   title: 'Beneficiaries',
                   actionLabel: 'Manage',
+                  onActionTap: () => context.push(AppRoutePaths.benlisting),
                 ),
               ),
               kHeight20,
@@ -299,7 +302,7 @@ class HomeTab extends StatelessWidget {
                 ),
               ),
       
-
+kHeight30,
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: CustomSectionHeader(

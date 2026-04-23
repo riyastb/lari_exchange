@@ -169,7 +169,9 @@ class RecentTxnCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        payload.transferType,
+                        payload.benFirstName.isNotEmpty
+                            ? payload.benFirstName
+                            : '',
                         style: AppTextStyles.body(
                           fontWeight: FontWeight.w600,
                           fontSize: 15,
@@ -179,20 +181,23 @@ class RecentTxnCard extends StatelessWidget {
                       ),
 
                       Text(
-                        dateForSubtitle,
+                        payload.transferType.isNotEmpty
+                            ? payload.transferType
+                            : '',
                         style: AppTextStyles.body(
                           color: scheme.onSurfaceVariant,
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
                         ),
                       ),
+                    
                     ],
                   ),
                 ],
               ),
 
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
@@ -215,6 +220,7 @@ class RecentTxnCard extends StatelessWidget {
                           fontSize: 14,
                         ),
                       ),
+                      
                     ],
                   ),
 
@@ -236,7 +242,14 @@ class RecentTxnCard extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                ],
+                 Text(
+                        dateForSubtitle,
+                        style: AppTextStyles.body(
+                          color: scheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                      ),  ],
               ),
             ],
           ),

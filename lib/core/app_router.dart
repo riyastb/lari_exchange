@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/presentation/auth/login_screen.dart';
 import 'package:lari_exchange/presentation/auth/verify_otp_screen.dart';
+import 'package:lari_exchange/presentation/beneficiary/ben_listing.dart';
 import 'package:lari_exchange/presentation/history/trnasaction_history.dart';
 import 'package:lari_exchange/presentation/home/main_shell.dart';
 
@@ -18,7 +19,8 @@ abstract final class AppRoutePaths {
   static const wallet = '/wallet';
   static const activity = '/activity';
   static const profile = '/profile';
-  static const history='/history';
+  static const history = '/history';
+  static const benlisting = '/benlisting';
 }
 
 abstract final class AppRouteNames {
@@ -30,7 +32,8 @@ abstract final class AppRouteNames {
   static const wallet = 'wallet';
   static const activity = 'activity';
   static const profile = 'profile';
-  static const history='history';
+  static const history = 'history';
+  static const benlisting = 'benlisting';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -52,21 +55,27 @@ final GoRouter appRouter = GoRouter(
         return VerifyOtpScreen(identifier: id);
       },
     ),
-     GoRoute(
+    GoRoute(
       path: AppRoutePaths.history,
       name: AppRouteNames.history,
       builder: (BuildContext context, GoRouterState state) {
         return const TrnasactionHistory();
       },
     ),
+    GoRoute(
+      path: AppRoutePaths.benlisting,
+      name: AppRouteNames.benlisting,
+      builder: (context, state) => const BenListing(),
+    ),
     StatefulShellRoute.indexedStack(
-      builder: (
-        BuildContext context,
-        GoRouterState state,
-        StatefulNavigationShell navigationShell,
-      ) {
-        return MainShell(navigationShell: navigationShell);
-      },
+      builder:
+          (
+            BuildContext context,
+            GoRouterState state,
+            StatefulNavigationShell navigationShell,
+          ) {
+            return MainShell(navigationShell: navigationShell);
+          },
       branches: [
         StatefulShellBranch(
           routes: [
@@ -90,7 +99,7 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
-     
+
         StatefulShellBranch(
           routes: [
             GoRoute(

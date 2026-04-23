@@ -60,6 +60,7 @@ dependencies:
   flutter_svg: ^2.2.4
   printing: ^5.14.2
   intl: ^0.18.0
+  equatable: ^2.0.7
   
 dev_dependencies:
   flutter_test:
