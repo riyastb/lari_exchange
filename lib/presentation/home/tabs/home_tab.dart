@@ -8,16 +8,15 @@ import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_icons.dart';
 import 'package:lari_exchange/core/app_router.dart';
-import 'package:lari_exchange/core/app_text_styles.dart';
-import 'package:lari_exchange/presentation/beneficiary/beneficiary_icon_util.dart';
-import 'package:lari_exchange/presentation/beneficiary/widgets/beneficiary_list_tile.dart';
 import 'package:lari_exchange/presentation/home/widgets/ben_home_listing.dart';
-import 'package:lari_exchange/presentation/widgets/custom_beneficiary_card.dart';
+import 'package:lari_exchange/presentation/home/widgets/home_profile_avatar.dart';
 import 'package:lari_exchange/presentation/widgets/custom_circle_icon_tile.dart';
 import 'package:lari_exchange/presentation/widgets/custom_icon_tile.dart';
 import 'package:lari_exchange/presentation/widgets/custom_pill_row.dart';
 import 'package:lari_exchange/presentation/widgets/custom_search.dart';
 import 'package:lari_exchange/presentation/widgets/custom_section_header.dart';
+
+
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -46,21 +45,12 @@ class HomeTab extends StatelessWidget {
                     ),
                     CustomSearchField(controller: TextEditingController()),
                     kWidth10,
-                    CircleAvatar(
-                      radius: 19,
-                      backgroundColor: Colors.grey.shade400,
-                      child: CircleAvatar(
-                        radius: 17,
-                        backgroundImage: NetworkImage(
-                          'https://plus.unsplash.com/premium_photo-1661508557554-e3d96f2fdde5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                        ),
-                      ),
-                    ),
+                    const HomeHeaderProfileAvatar(),
                   ],
                 ),
               ),
               kHeight10,
-              Image.asset('assets/images/1036_1.jpg'),
+              Image.asset(AppIcons.laribanner3),
               kHeight20,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),

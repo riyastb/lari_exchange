@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lari_exchange/application/home/home_bloc.dart';
 import 'package:lari_exchange/application/sign_in/sign_in_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_router.dart';
@@ -18,8 +19,14 @@ class MyApp extends StatelessWidget {
       seedColor: korange,
     ).copyWith(primary: korange);
 
-    return BlocProvider<SignInBloc>(
-      create: (_) => SignInBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SignInBloc>(create: (_) => SignInBloc()),
+        BlocProvider<HomeBloc>(
+          create: (_) => HomeBloc(),
+          lazy: false,
+        ),
+      ],
       child: MaterialApp.router(
         title: 'Lari Exchange',
         debugShowCheckedModeBanner: false,

@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lari_exchange/application/home/home_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 
-const String _profileNavImageUrl =
-    'https://plus.unsplash.com/premium_photo-1661508557554-e3d96f2fdde5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-
-
 Widget _profileNavAvatar(bool selected) {
-  return Container(
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      // border: Border.all(
-      //  // color: selected ? korange : Colors.transparent,
-      //   width: 2,
-      // ),
-    ),
-    child: CircleAvatar(
-      radius: 13,
-      backgroundColor: Colors.grey.shade200,
-      backgroundImage: const NetworkImage(_profileNavImageUrl),
-    ),
+  return BlocBuilder<HomeBloc, HomeState>(
+    buildWhen: (a, b) => a.image != b.image,
+    builder: (context, state) {
+      final bytes = state.image;
+      if (bytes != null && bytes.isNotEmpty) {
+        return CircleAvatar(
+          radius: 13,
+          backgroundColor: Colors.grey.shade200,
+          backgroundImage: MemoryImage(bytes),
+        );
+      }
+      return CircleAvatar(
+        radius: 13,
+        backgroundColor: Colors.grey.shade200,
+        child: Icon(
+          Icons.person_rounded,
+          size: 16,
+          color: Colors.grey.shade600,
+        ),
+      );
+    },
   );
 }
 
@@ -45,11 +51,16 @@ Widget _shellNavAssetIcon(String path, Color accent) {
   );
 }
 
-class MainShell extends StatelessWidget {
+class MainShell extends StatefulWidget {
   const MainShell({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 
+  @override
+  State<MainShell> createState() => _MainShellState();
+}
+
+class _MainShellState extends State<MainShell> {
   static final List<_ShellDestination> _destinations = [
     const _ShellDestination(
       label: 'Home',
@@ -74,8 +85,18 @@ class MainShell extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<HomeBloc>().add(const HomeImageDownloadEvent());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final navigationShell = widget.navigationShell;
     final index = navigationShell.currentIndex.clamp(
       0,
       _destinations.length - 1,

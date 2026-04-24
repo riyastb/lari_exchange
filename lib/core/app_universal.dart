@@ -5,6 +5,9 @@ import 'package:intl/intl.dart';
 // import 'package:lari_exchange/domain/master/model/onlinecountrymapping.pbgrpc.dart'
 //     as online;
 import 'package:get/get.dart';
+import 'package:lari_exchange/core/currencymodel.dart';
+import 'package:lari_exchange/core/payment_modes_model.dart';
+import 'package:lari_exchange/domain/topup/topup.pb.dart' as online;
 // import 'package:lari_exchange/domain/core/user/user_existing_model.dart';
 import 'package:lari_exchange/domain/user/model/user.pb.dart' as user;
 import 'package:lari_exchange/domain/user/model/user.pb.dart' as prime;
@@ -163,11 +166,11 @@ class Universal {
 
   // static UserExistingModel? existingUserData;
 
-  // static List<online.Payload> transferTypes = [];
-  // static List<PaymentModesModel> transferModes = [];
-  // static List<CurrenciesModel> bankCurrencyList = [];
-  // static List<CurrenciesModel> cashCurrencyList = [];
-  // static List<CurrenciesModel> walletCurrencyList = [];
+  static List<online.Payload> transferTypes = [];
+  static List<PaymentModesModel> transferModes = [];
+  static List<CurrenciesModel> bankCurrencyList = [];
+  static List<CurrenciesModel> cashCurrencyList = [];
+  static List<CurrenciesModel> walletCurrencyList = [];
 
   /// Local currency info (fetched from company profile / master)
   static String localCurrencyCode = 'YER';

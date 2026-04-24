@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
@@ -27,11 +26,29 @@ class _WalletTabState extends State<WalletTab> {
   List<rem_report.Payload> _recent = [];
   bool _loadingTxns = true;
   String? _txnError;
+  bool _bannerPrecacheStarted = false;
 
   @override
   void initState() {
     super.initState();
     _loadRecent();
+  }
+
+  void _precacheBannerIfNeeded(BuildContext context) {
+    if (_bannerPrecacheStarted) return;
+    _bannerPrecacheStarted = true;
+    final mq = MediaQuery.of(context);
+    final w = (mq.size.width * mq.devicePixelRatio).round();
+    final h = (168 * mq.devicePixelRatio).round();
+    precacheImage(
+      ResizeImage(
+        AssetImage(AppIcons.laribanner),
+        width: w,
+        height: h,
+        allowUpscaling: false,
+      ),
+      context,
+    );
   }
 
   Future<void> _loadRecent() async {
@@ -129,10 +146,14 @@ class _WalletTabState extends State<WalletTab> {
 
   @override
   Widget build(BuildContext context) {
+    _precacheBannerIfNeeded(context);
     final scheme = Theme.of(context).colorScheme;
     final bottomInset =
         MediaQuery.viewPaddingOf(context).bottom + kFloatingNavContentInset;
     final userPayload = Universal.userPayload;
+    final dpr = MediaQuery.devicePixelRatioOf(context);
+    final bannerCacheW = (MediaQuery.sizeOf(context).width * dpr).round();
+    final bannerCacheH = (168 * dpr).round();
 
     final currencies = [
       _CurrencyRow(
@@ -185,6 +206,9 @@ class _WalletTabState extends State<WalletTab> {
                     width: double.infinity,
                     height: 168,
                     fit: BoxFit.cover,
+                    gaplessPlayback: true,
+                    cacheWidth: bannerCacheW,
+                    cacheHeight: bannerCacheH,
                   ),
                 ),
                 Positioned(

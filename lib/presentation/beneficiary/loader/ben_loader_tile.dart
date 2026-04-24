@@ -12,14 +12,14 @@ class BeneficiaryListSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer(
       enabled: true,
-      ignoreContainers: true,
+      ignoreContainers: false,
       effect: const ShimmerEffect(
-        baseColor: Color(0xFFC8C8C8),
-        highlightColor: Color(0xFFE8E8E8),
+        baseColor: Color.fromARGB(255, 233, 233, 233),
+        highlightColor: Color.fromARGB(255, 242, 241, 241),
       ),
       child: ListView.separated(
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
-        itemCount: 7,
+        itemCount: 5,
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, _) {
           return const BeneficiaryListTileSkeleton();
@@ -39,6 +39,7 @@ class BeneficiaryListTileSkeleton extends StatelessWidget {
       decoration: BoxDecoration(
         color: kwhite,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(width: 0.5, color: scheme.outlineVariant),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.10),
@@ -88,7 +89,7 @@ class BeneficiaryListTileSkeleton extends StatelessWidget {
                       kWidth5,
                       Expanded(
                         child: Text(
-                          'Country and region name placeholder',
+                          'Country and region name',
                           style: AppTextStyles.body(
                             color: scheme.onSurfaceVariant,
                             fontSize: 13,
@@ -102,7 +103,7 @@ class BeneficiaryListTileSkeleton extends StatelessWidget {
                   ),
                   kHeight2,
                   Text(
-                    'Receive mode names comma separated',
+                    'Receive mode names comma',
                     style: AppTextStyles.body(
                       color: scheme.onSurfaceVariant,
                       fontSize: 13,
@@ -114,10 +115,10 @@ class BeneficiaryListTileSkeleton extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: scheme.onSurfaceVariant,
-            ),
+            // Icon(
+            //   Icons.chevron_right_rounded,
+            //   color: scheme.onSurfaceVariant,
+            // ),
           ],
         ),
       ),
@@ -133,25 +134,26 @@ class _SkeletonAvatarFrame extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        border: Border.all(width: 0.5, color: kblack),
+        color: Colors.grey.shade200,
+       // border: Border.all(width: 0.5, color: kblack),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Container(
-        width: 60,
-        height: 60,
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          color: kwhite,
-          shape: BoxShape.circle,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Icon(
-            Icons.account_balance_wallet_outlined,
-            size: 30,
-            color: const Color(0xFFBDBDBD),
-          ),
-        ),
+        width: 58,
+        height: 58,
+        // alignment: Alignment.center,
+        // decoration: const BoxDecoration(
+        //   color: kwhite,
+        //   shape: BoxShape.circle,
+        // )//,
+        // child: Padding(
+        //   padding: const EdgeInsets.all(15),
+        //   child: Icon(
+        //     Icons.account_balance_wallet_outlined,
+        //     size: 30,
+        //     color: const Color(0xFFBDBDBD),
+        //   ),
+        // ),
       ),
     );
   }
