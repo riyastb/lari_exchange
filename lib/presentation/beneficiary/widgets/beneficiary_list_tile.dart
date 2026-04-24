@@ -5,7 +5,7 @@ import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 import 'package:lari_exchange/domain/beneficiaries/model/beneficiary.pb.dart'
     as beneficiaries;
-import 'package:lari_exchange/presentation/beneficiary/beneficiary_icon_util.dart';
+import 'package:lari_exchange/presentation/beneficiary/widgets/beneficiary_icon_util.dart';
 
 class BeneficiaryListTile extends StatelessWidget {
   const BeneficiaryListTile({super.key, required this.payload, this.onTap});

@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lari_exchange/application/home/home_bloc.dart';
 
-/// Profile photo from [HomeBloc] (after [HomeImageDownloadEvent]).
-/// Double ring matches the previous home header layout.
+
 class HomeHeaderProfileAvatar extends StatelessWidget {
   const HomeHeaderProfileAvatar({
     super.key,

@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 class AppIcons {
   static const String larilogoimage = 'assets/icons/lari_big_right.png';
   static const String logo = 'assets/icons/logo-small_bg.svg';
@@ -17,4 +19,20 @@ class AppIcons {
   static const String emptyDataIllustration = 'assets/icons/folder.svg';
   static const String errorStateIllustration = 'assets/icons/error_state.svg';
   static const String corporateIcon = 'assets/icons/company.svg';
+
+
+  static const double walletBannerHeight = 168;
+
+
+  static ImageProvider walletBannerImageProvider(BuildContext context) {
+    final dpr = MediaQuery.devicePixelRatioOf(context);
+    final w = (MediaQuery.sizeOf(context).width * dpr).round();
+    final h = (walletBannerHeight * dpr).round();
+    return ResizeImage(
+      AssetImage(laribanner),
+      width: w,
+      height: h,
+      allowUpscaling: false,
+    );
+  }
 }

@@ -34,21 +34,12 @@ class _WalletTabState extends State<WalletTab> {
     _loadRecent();
   }
 
-  void _precacheBannerIfNeeded(BuildContext context) {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     if (_bannerPrecacheStarted) return;
     _bannerPrecacheStarted = true;
-    final mq = MediaQuery.of(context);
-    final w = (mq.size.width * mq.devicePixelRatio).round();
-    final h = (168 * mq.devicePixelRatio).round();
-    precacheImage(
-      ResizeImage(
-        AssetImage(AppIcons.laribanner),
-        width: w,
-        height: h,
-        allowUpscaling: false,
-      ),
-      context,
-    );
+    precacheImage(AppIcons.walletBannerImageProvider(context), context);
   }
 
   Future<void> _loadRecent() async {
@@ -146,14 +137,10 @@ class _WalletTabState extends State<WalletTab> {
 
   @override
   Widget build(BuildContext context) {
-    _precacheBannerIfNeeded(context);
     final scheme = Theme.of(context).colorScheme;
     final bottomInset =
         MediaQuery.viewPaddingOf(context).bottom + kFloatingNavContentInset;
     final userPayload = Universal.userPayload;
-    final dpr = MediaQuery.devicePixelRatioOf(context);
-    final bannerCacheW = (MediaQuery.sizeOf(context).width * dpr).round();
-    final bannerCacheH = (168 * dpr).round();
 
     final currencies = [
       _CurrencyRow(
@@ -201,14 +188,12 @@ class _WalletTabState extends State<WalletTab> {
                     ],
                   ).createShader(bounds),
                   blendMode: BlendMode.darken,
-                  child: Image.asset(
-                    AppIcons.laribanner,
+                  child: Image(
+                    image: AppIcons.walletBannerImageProvider(context),
                     width: double.infinity,
-                    height: 168,
+                    height: AppIcons.walletBannerHeight,
                     fit: BoxFit.cover,
                     gaplessPlayback: true,
-                    cacheWidth: bannerCacheW,
-                    cacheHeight: bannerCacheH,
                   ),
                 ),
                 Positioned(

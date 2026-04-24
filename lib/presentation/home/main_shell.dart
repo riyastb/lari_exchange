@@ -5,6 +5,7 @@ import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/application/home/home_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
+import 'package:lari_exchange/core/app_icons.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
 
 Widget _profileNavAvatar(bool selected) {
@@ -90,6 +91,7 @@ class _MainShellState extends State<MainShell> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<HomeBloc>().add(const HomeImageDownloadEvent());
+      precacheImage(AppIcons.walletBannerImageProvider(context), context);
     });
   }
 

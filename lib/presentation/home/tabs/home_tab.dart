@@ -16,8 +16,6 @@ import 'package:lari_exchange/presentation/widgets/custom_pill_row.dart';
 import 'package:lari_exchange/presentation/widgets/custom_search.dart';
 import 'package:lari_exchange/presentation/widgets/custom_section_header.dart';
 
-
-
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
@@ -45,12 +43,17 @@ class HomeTab extends StatelessWidget {
                     ),
                     CustomSearchField(controller: TextEditingController()),
                     kWidth10,
-                    const HomeHeaderProfileAvatar(),
+                    GestureDetector(
+                      onTap: () {
+                        StatefulNavigationShell.of(context).goBranch(2);
+                      },
+                      child: const HomeHeaderProfileAvatar(),
+                    ),
                   ],
                 ),
               ),
               kHeight10,
-              Image.asset(AppIcons.laribanner3),
+              Image.asset(AppIcons.laribanner2),
               kHeight20,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -91,14 +94,18 @@ class HomeTab extends StatelessWidget {
                           label: 'Your QR Code',
                         ),
                         kWidth10,
-                        const CustomPillRow(
+                        CustomPillRow(
                           icon: Icons.history,
+                          ontap: () {
+                            StatefulNavigationShell.of(context).goBranch(1);
+                          },
                           label: 'Check your Balance',
                         ),
                         kWidth10,
 
                         const CustomPillRow(
                           icon: Icons.receipt_long_outlined,
+
                           label: 'Transactions & History',
                         ),
                         kWidth10,
@@ -107,8 +114,11 @@ class HomeTab extends StatelessWidget {
                           label: 'Rate Calculator',
                         ),
                         kWidth10,
-                        const CustomPillRow(
+                        CustomPillRow(
                           icon: Icons.account_balance_wallet_outlined,
+                          ontap: () {
+                            StatefulNavigationShell.of(context).goBranch(1);
+                          },
                           label: 'My Accounts',
                         ),
                         kWidth10,
@@ -132,7 +142,8 @@ class HomeTab extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
-                    Row(crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
                         Expanded(
@@ -146,7 +157,6 @@ class HomeTab extends StatelessWidget {
                           child: CustomCircleIconTile(
                             svgAsset: AppIcons.waterIcon,
                             label: 'Water',
-                          
                           ),
                         ),
                         Expanded(
@@ -160,12 +170,11 @@ class HomeTab extends StatelessWidget {
                           child: CustomCircleIconTile(
                             svgAsset: AppIcons.wifibillIcon,
                             label: 'Internet',
-                  
                           ),
                         ),
                       ],
                     ),
-                 //   kHeight20,
+                    //   kHeight20,
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //   children: const [
@@ -203,7 +212,7 @@ class HomeTab extends StatelessWidget {
                 ),
               ),
               kHeight30,
-            //  kHeight30,
+              //  kHeight30,
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: CustomSectionHeader(
@@ -224,15 +233,15 @@ class HomeTab extends StatelessWidget {
                           children: [
                             Image.asset('assets/cms_cards/MC002.png'),
                             kWidth10,
-                             Image.asset('assets/cms_cards/TW001.png'),
-                          
+                            Image.asset('assets/cms_cards/TW001.png'),
+
                             kWidth10,
-                                Image.asset('assets/cms_cards/TF002.png'),
-                      
+                            Image.asset('assets/cms_cards/TF002.png'),
+
                             kWidth10,
                             Image.asset('assets/cms_cards/MC003.png'),
                             kWidth10,
-                               Image.asset('assets/cms_cards/MC001.png'),
+                            Image.asset('assets/cms_cards/MC001.png'),
                             kWidth10,
                             Image.asset('assets/cms_cards/RC001.png'),
                             kWidth10,
@@ -257,8 +266,9 @@ class HomeTab extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: BlocProvider(
                   lazy: false,
-                  create: (_) => BeneficiaryListingBloc()
-                    ..add(const GetBeneficiariesEvent('0')),
+                  create: (_) =>
+                      BeneficiaryListingBloc()
+                        ..add(const GetBeneficiariesEvent('0')),
                   child: const HomeBeneficiariesRow(),
                 ),
               ),
@@ -278,7 +288,7 @@ class HomeTab extends StatelessWidget {
                 child: Row(
                   children: [
                     CustomCircleIconTile(
-                   svgAsset: AppIcons.corporateIcon,
+                      svgAsset: AppIcons.corporateIcon,
                       label: 'Wonderland',
                     ),
                   ],
@@ -353,7 +363,6 @@ class HomeTab extends StatelessWidget {
               //     ],
               //   ),
               // ),
-
               kHeight100,
             ],
           ),
@@ -362,4 +371,3 @@ class HomeTab extends StatelessWidget {
     );
   }
 }
-

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lari_exchange/application/beneficiary_listing/beneficiary_listing_bloc.dart';
 import 'package:lari_exchange/core/app_text_styles.dart';
-import 'package:lari_exchange/presentation/beneficiary/beneficiary_icon_util.dart';
+import 'package:lari_exchange/presentation/beneficiary/widgets/beneficiary_icon_util.dart';
 import 'package:lari_exchange/presentation/beneficiary/widgets/beneficiary_list_tile.dart';
 import 'package:lari_exchange/presentation/widgets/custom_beneficiary_card.dart';
 
