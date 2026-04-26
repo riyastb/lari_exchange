@@ -90,6 +90,7 @@ class _MainShellState extends State<MainShell> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      context.read<HomeBloc>().add(const HomeSyncProfileFromPayloadEvent());
       context.read<HomeBloc>().add(const HomeImageDownloadEvent());
       precacheImage(AppIcons.walletBannerImageProvider(context), context);
     });

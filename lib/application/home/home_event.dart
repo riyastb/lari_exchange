@@ -54,3 +54,11 @@ class HomeInitEvent extends HomeEvent {
   // TODO: implement props
   List<Object?> get props => [];
 }
+
+/// Syncs name, ID, contact from the stored login payload into [HomeState].
+class HomeSyncProfileFromPayloadEvent extends HomeEvent {
+  const HomeSyncProfileFromPayloadEvent();
+
+  @override
+  List<Object?> get props => [];
+}

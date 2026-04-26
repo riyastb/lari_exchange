@@ -53,7 +53,7 @@ class HomeTab extends StatelessWidget {
                 ),
               ),
               kHeight10,
-              Image.asset(AppIcons.laribanner2),
+              Image.asset('assets/images/1036_1.jpg'),
               kHeight20,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -145,22 +145,26 @@ class HomeTab extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Expanded(
                           child: CustomCircleIconTile(
                             svgAsset: AppIcons.electricityIcon,
-
+                            backgroundColor: korange.withOpacity(0.15),
                             label: 'Electricity',
                           ),
                         ),
                         Expanded(
                           child: CustomCircleIconTile(
+                            backgroundColor: Colors.blue.withOpacity(0.15),
                             svgAsset: AppIcons.waterIcon,
                             label: 'Water',
                           ),
                         ),
                         Expanded(
                           child: CustomCircleIconTile(
+                            backgroundColor: Colors.deepOrange.withOpacity(
+                              0.15,
+                            ),
                             svgAsset: AppIcons.phoneIcon,
                             label: 'Mobile\nRechange',
                             //  value: 'AED 150',
@@ -168,6 +172,7 @@ class HomeTab extends StatelessWidget {
                         ),
                         Expanded(
                           child: CustomCircleIconTile(
+                            backgroundColor: Colors.cyan.withOpacity(0.15),
                             svgAsset: AppIcons.wifibillIcon,
                             label: 'Internet',
                           ),

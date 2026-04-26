@@ -6,6 +6,8 @@ class HomeState extends Equatable {
   final String userName;
   final String idNumber;
   final String idExpiry;
+  /// Registered contact / mobile from login payload.
+  final String contact;
   final double? latitude; // nullable
   final double? longitude; // nullable
 
@@ -27,6 +29,7 @@ class HomeState extends Equatable {
     this.latitude,
     this.longitude,
     this.idExpiry = '',
+    this.contact = '',
     this.showBalance = false,
     this.walletBalance = '',
     this.commissionBalance = '',
@@ -44,6 +47,7 @@ class HomeState extends Equatable {
     String? userName,
     String? idNumber,
     String? idExpiry,
+    String? contact,
     double? latitude,
     double? longitude,
     bool? showBalance,
@@ -62,6 +66,7 @@ class HomeState extends Equatable {
       userName: userName ?? this.userName,
       idNumber: idNumber ?? this.idNumber,
       idExpiry: idExpiry ?? this.idExpiry,
+      contact: contact ?? this.contact,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       showBalance: showBalance ?? this.showBalance,
@@ -92,6 +97,7 @@ class HomeState extends Equatable {
       userName: userName,
       idNumber: idNumber,
       idExpiry: idExpiry,
+      contact: contact,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       showBalance: showBalance,
@@ -113,6 +119,7 @@ class HomeState extends Equatable {
         userName,
         idNumber,
         idExpiry,
+        contact,
         latitude,
         longitude,
         showBalance,

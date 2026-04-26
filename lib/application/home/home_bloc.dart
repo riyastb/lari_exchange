@@ -33,6 +33,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(const HomeState()) {
     on<HomeInitialEvent>(_onInitial);
+    on<HomeSyncProfileFromPayloadEvent>(_onSyncProfileFromPayload);
     on<HomeImageDownloadEvent>(_handleDpDownload);
     on<HomeImageClearEvent>(_handleHomeImageClearEvent);
     on<FetchBillMode>(_handleFetchBillMode);
@@ -140,13 +141,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  void _onSyncProfileFromPayload(
+    HomeSyncProfileFromPayloadEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    final p = Universal.userPayload;
+    final displayName = [
+      p.firstName,
+      p.middlename,
+      p.lastName,
+    ].where((s) => s.trim().isNotEmpty).join(' ');
+
+    emit(
+      state.copyWith(
+        userName: displayName,
+        idNumber: p.iDNumber,
+        idExpiry: p.iDExpiry,
+        contact: p.contact,
+      ),
+    );
+  }
+
   Future<void> _onInitial(HomeInitialEvent event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(
-      image: null,
-      userName: '${Universal.firstName} ${Universal.lastName}',
-      idNumber: Universal.userPayload.iDNumber,
-      idExpiry: Universal.userPayload.iDExpiry,
-    ));
+    _onSyncProfileFromPayload(const HomeSyncProfileFromPayloadEvent(), emit);
+    emit(state.copyWithForNull(image: null));
     List<online.Payload> transferTypes = [];
     List<PaymentModesModel> transferModes = [];
     List<CurrenciesModel> bankCurrencyList = [];

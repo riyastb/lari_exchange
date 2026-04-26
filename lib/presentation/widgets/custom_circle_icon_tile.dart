@@ -5,7 +5,7 @@ import 'package:lari_exchange/core/app_text_styles.dart';
 
 
 class CustomCircleIconTile extends StatelessWidget {
-  const CustomCircleIconTile({
+   CustomCircleIconTile({
     super.key,
     this.icon,
     this.svgPicture,
@@ -33,7 +33,7 @@ class CustomCircleIconTile extends StatelessWidget {
 
   final String? value;
   final double radius;
-  final Color backgroundColor;
+   Color backgroundColor;
   final Color iconColor;
   final TextStyle? labelStyle;
   final TextStyle? valueStyle;
@@ -70,22 +70,27 @@ class CustomCircleIconTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+       final scheme = Theme.of(context).colorScheme;
+      
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width:60,
-          height:60 ,
+         height: 118,
+         width: 95,
         
           decoration: BoxDecoration(
-            color: backgroundColor,
+            color:backgroundColor ,
            // shape: BoxShape.circle,
-           border: Border.all(color: kblack, width: 0.5),
+          // border: Border.all(color: kblack, width: 0.5),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: _circleContent(),
-        ),
-        SizedBox(height: gap),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container( width:60,
+          height:60 ,
+                child: _circleContent()),
+            SizedBox(height: gap),
         Text(
           label,
           textAlign: TextAlign.center,
@@ -106,7 +111,10 @@ class CustomCircleIconTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: valueStyle ?? AppTextStyles.captionMuted(fontSize: 11),
           ),
-        ],
+        ],   ],
+          ),
+        ),
+      
       ],
     );
   }
