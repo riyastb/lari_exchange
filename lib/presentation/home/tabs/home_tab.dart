@@ -30,10 +30,11 @@ class HomeTab extends StatelessWidget {
         children: [
           Column(
             children: [
+              kHeight4,
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
-                  vertical: 8,
+                
                 ),
                 child: Row(
                   children: [
@@ -51,9 +52,9 @@ class HomeTab extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              kHeight10,
-              Image.asset('assets/images/1036_1.jpg'),
+              ),kHeight4,
+           
+              Image.asset(AppIcons.laribanner,alignment: AlignmentGeometry.bottomCenter,fit: BoxFit.cover,height: 165,width: double.infinity,),
               kHeight20,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),

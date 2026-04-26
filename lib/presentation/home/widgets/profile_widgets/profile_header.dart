@@ -1,13 +1,12 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lari_exchange/application/home/home_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_icons.dart';
-import 'package:lari_exchange/presentation/home/tabs/profile_tab.dart';
 
 String _titleCaseName(String value) {
   if (value.isEmpty) return value;
@@ -50,11 +49,11 @@ class ProfileHero extends StatelessWidget {
           children: [
             // 🔷 Background Section
             Container(
-              height: 230,
+              height: 280,
               width: double.infinity,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30),
+                  bottom: Radius.circular(32),
                 ),
               ),
               child: Stack(
@@ -63,9 +62,9 @@ class ProfileHero extends StatelessWidget {
                   SvgPicture.asset(
                     AppIcons.profilebaground,
                     fit: BoxFit.cover,
-                    alignment: Alignment.center,
                   ),
 
+                  // 🔥 Premium Gradient
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -88,6 +87,7 @@ class ProfileHero extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         kHeight60,
+
                         // 🔘 Menu
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -95,46 +95,88 @@ class ProfileHero extends StatelessWidget {
                             Icon(
                               Icons.more_vert,
                               size: 22,
-                              color: Colors.grey.shade900,
+                              color: Colors.grey.shade800,
                             ),
                           ],
                         ),
 
-                        kHeight70,
+                        const Spacer(),
 
-                        // 👤 Name
-                        Text(
-                          name.isEmpty ? '—' : name,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey.shade900,
-                          ),
-                        ),
+                    
+Text(
+  name.isEmpty ? '—' : name,
+  style: GoogleFonts.montserrat(
+    fontSize: 26,
+    fontWeight: FontWeight.w700,
+    color: Colors.black,
+  ),
+),
 
-                        if (idLine.isNotEmpty) ...[
-                          const SizedBox(height: 6),
-                          Text(
-                            idLine,
-                            style: GoogleFonts.montserrat(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                        ],
+const SizedBox(height: 8),
 
-                        if (phoneLine.isNotEmpty) ...[
-                          SizedBox(height: idLine.isNotEmpty ? 2 : 6),
-                          Text(
-                            phoneLine,
-                            style: GoogleFonts.montserrat(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                        ],
+// 🪪 ID Row
+if (idLine.isNotEmpty)
+  Row(
+    children: [
+      Icon(Icons.badge_outlined, size: 14, color: Colors.grey.shade700),
+      const SizedBox(width: 6),
+      Text(
+        idLine,
+        style: GoogleFonts.montserrat(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: Colors.grey.shade700,
+        ),
+      ),
+    ],
+  ),
+
+// 📞 Phone Row with Verified Badge
+if (phoneLine.isNotEmpty)
+  Padding(
+    padding: const EdgeInsets.only(top: 4),
+    child: Row(
+      children: [
+        Icon(Icons.phone, size: 14, color: Colors.grey.shade700),
+        const SizedBox(width: 6),
+
+        Text(
+          phoneLine,
+          style: GoogleFonts.montserrat(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey.shade700,
+          ),
+        ),
+
+        const SizedBox(width: 6),
+
+        // ✅ Verified Badge
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          decoration: BoxDecoration(
+            color: Colors.green.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.verified, size: 12, color: Colors.green),
+              const SizedBox(width: 2),
+              Text(
+                "Verified",
+                style: GoogleFonts.montserrat(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.green.shade700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -142,10 +184,10 @@ class ProfileHero extends StatelessWidget {
               ),
             ),
 
-         
+            // 🔥 Profile Image
             Positioned(
               right: 20,
-              bottom: -35,
+              bottom: -25,
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -154,23 +196,14 @@ class ProfileHero extends StatelessWidget {
                     width: 90,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey.shade300, width: 1),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.white, width: 3),
                       boxShadow: [
-                       BoxShadow(
-            color: Colors.black.withOpacity(0.10),
-            blurRadius: 1,
-            offset: const Offset(0, 2),
-          ),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 3,
-            offset: const Offset(-1, 1),
-          ),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 3,
-            offset: const Offset(1, 1),
-          ),
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
                       ],
                     ),
                     child: ClipOval(
@@ -181,7 +214,7 @@ class ProfileHero extends StatelessWidget {
                               child: Center(
                                 child: SvgPicture.asset(
                                   AppIcons.profileUser,
-                                  width: 30,
+                                  width: 32,
                                   colorFilter: const ColorFilter.mode(
                                     _kPlaceholderIcon,
                                     BlendMode.srcIn,
@@ -192,17 +225,33 @@ class ProfileHero extends StatelessWidget {
                     ),
                   ),
 
-                  // 📷 Scanner Button (Better Position & Feel)
+                  // 🔥 QR Button
                   Positioned(
-                    bottom: 4,
-                    right: 4,
-                    child: GestureDetector(
-                      onTap: () {
-                        // TODO
-                      },
-                      child: SmallSvgButton(
-                        onTap: () {},
-                        asset: AppIcons.profileQr,
+                    bottom: 0,
+                    right: 0,
+                    child: Material(
+                      color: korange,
+                      shape: const CircleBorder(),
+                      elevation: 3,
+                      child: InkWell(
+                        onTap: () {
+                          // TODO: Add action
+                        },
+                        customBorder: const CircleBorder(),
+                        child: SizedBox(
+                          height: 32,
+                          width: 32,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              AppIcons.profileQr,
+                              width: 16,
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -210,41 +259,10 @@ class ProfileHero extends StatelessWidget {
               ),
             ),
 
-            // const SizedBox(height: 50), // space for overlap
+            const SizedBox(height: 50),
           ],
         );
       },
-    );
-  }
-}
-
-class SmallSvgButton extends StatelessWidget {
-  const SmallSvgButton({required this.asset, required this.onTap});
-
-  final String asset;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.grey.shade300,
-      shape: const CircleBorder(),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: SizedBox(
-          height: 30,
-          width: 30,
-          child: Center(
-            child: SvgPicture.asset(
-              asset,
-              width: 15,
-              height: 15,
-              colorFilter: const ColorFilter.mode(kIconStroke, BlendMode.srcIn),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

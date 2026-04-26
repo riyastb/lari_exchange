@@ -24,7 +24,7 @@ class ProfileTab extends StatelessWidget {
         padding: EdgeInsets.only(bottom: bottomInset + 24),
         children: [
           ProfileHero(),
-          kHeight60,
+    //      kHeight60,
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Row(
