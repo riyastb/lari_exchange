@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:grpc/grpc.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 
@@ -15,10 +14,12 @@ import 'package:lari_exchange/presentation/rate_calculator/controller/rateCalcul
 
 import 'package:meta/meta.dart';
 import 'package:lari_exchange/domain/rate_control/model/ratecontrol.pbgrpc.dart' as rate;
+import 'package:lari_exchange/domain/master/model/onlinecountrymapping.pbgrpc.dart' as online;
 
 import '../../core/app_universal.dart';
 
 import '../../infrastructure/rate_control_repository/rate_control_repository.dart';
+import '../../infrastructure/master/master_repository.dart';
 
 part 'rate_calculator_event.dart';
 part 'rate_calculator_state.dart';
@@ -50,6 +51,7 @@ class RateCalculatorBloc extends Bloc<RateCalculatorEvent, RateCalculatorState> 
   List<PaymentModesModel> transferModes = [];
 
   RateControlRepository rateControlRepository = RateControlRepository();
+  final MasterRepository _masterRepository = MasterRepository();
   double selectedCurrRate = 0.0;
   CurrenciesModel? selectedBankCurrency;
   CurrenciesModel? selectedCashCurrency;
@@ -68,81 +70,280 @@ class RateCalculatorBloc extends Bloc<RateCalculatorEvent, RateCalculatorState> 
   }
 
   Future<void> _onModeChange(RateChangeModeEvent event, Emitter<RateCalculatorState> emit) async {
-    var currencyList = <SelectionModel>[];
+    final code = event.receiveModeCode;
     add(RateCalcClearEvent());
-    if (event.index == 1) {
-      /// Bank mode selected
+    final modeIndex = int.tryParse(code) ?? 1;
 
-      RateCalculatorController.fcAmountController.text = bnkLcAmount;
-      currencyList = Universal.bankCurrencyList
-          .map((e) => SelectionModel(
-                name: e.currencyName,
-                code: e.currencyCode,
-                flagPath: "https://flagcdn.com/w80/${e.countryCode!.toLowerCase()}.png",
-              ))
-          .toList();
-      selectedBankCurrency != null
-          ? add(RateCalcSelectCurrEvent(selectedBankCurrency?.currencyCode ?? ''))
-          : null;
-    } else if (event.index == 2) {
-      // Cash mode selected
-      RateCalculatorController.fcAmountController.text = cashLcAmount;
-      currencyList = Universal.cashCurrencyList
-          .map((e) => SelectionModel(
-                name: e.currencyName,
-                code: e.currencyCode,
-                flagPath: "https://flagcdn.com/w80/${e.countryCode!.toLowerCase()}.png",
-              ))
-          .toList();
-      selectedCashCurrency != null
-          ? add(RateCalcSelectCurrEvent(selectedCashCurrency?.currencyCode ?? ''))
-          : null;
-    } else if (event.index == 3) {
-      // Wallet mode selected
-      RateCalculatorController.fcAmountController.text = walletLcAmount;
-      currencyList = Universal.walletCurrencyList
-          .map((e) => SelectionModel(
-                name: e.currencyName,
-                code: e.currencyCode,
-                flagPath: "https://flagcdn.com/w80/${e.countryCode!.toLowerCase()}.png",
-              ))
-          .toList();
-      selectedWalletCurrency != null
-          ? add(RateCalcSelectCurrEvent(selectedWalletCurrency?.currencyCode ?? ''))
-          : null;
+    switch (code) {
+      case '1':
+        RateCalculatorController.fcAmountController.text = bnkLcAmount;
+        if (selectedBankCurrency != null) {
+          add(
+            RateCalcSelectCurrEvent(
+              selectedBankCurrency?.currencyCode ?? '',
+              countryId: selectedBankCurrency?.countryId,
+              countryCode: selectedBankCurrency?.countryCode,
+            ),
+          );
+        }
+        break;
+      case '2':
+        RateCalculatorController.fcAmountController.text = cashLcAmount;
+        if (selectedCashCurrency != null) {
+          add(
+            RateCalcSelectCurrEvent(
+              selectedCashCurrency?.currencyCode ?? '',
+              countryId: selectedCashCurrency?.countryId,
+              countryCode: selectedCashCurrency?.countryCode,
+            ),
+          );
+        }
+        break;
+      case '3':
+        RateCalculatorController.fcAmountController.text = walletLcAmount;
+        if (selectedWalletCurrency != null) {
+          add(
+            RateCalcSelectCurrEvent(
+              selectedWalletCurrency?.currencyCode ?? '',
+              countryId: selectedWalletCurrency?.countryId,
+              countryCode: selectedWalletCurrency?.countryCode,
+            ),
+          );
+        }
+        break;
+      default:
+        break;
     }
-    emit(state.copyWith(selectedModeIndex: event.index, currencyList: currencyList));
+
+    final currencyList = _currencyPickerListForCode(code);
+    emit(state.copyWith(selectedModeIndex: modeIndex, currencyList: currencyList));
+  }
+
+  /// Same source as [HomeBloc._onInitial]: fills [Universal] transfer + currency lists.
+  Future<void> _loadUniversalFromMaster() async {
+    List<online.Payload> transferTypes = [];
+    var transferModes = <PaymentModesModel>[];
+    var bankCurrencyList = <CurrenciesModel>[];
+    var cashCurrencyList = <CurrenciesModel>[];
+    var walletCurrencyList = <CurrenciesModel>[];
+    try {
+      final response = await _masterRepository.getOnlineCountryMappingDetails();
+      await for (final data in response) {
+        transferTypes.add(data);
+      }
+
+      if (transferTypes.isEmpty) return;
+
+      final modesList = <PaymentModesModel>[];
+      for (var i = 0; i < transferTypes.length; i++) {
+        modesList.add(
+          PaymentModesModel(
+            id: transferTypes[i].receiveModeCode,
+            name: transferTypes[i].receiveModeName,
+          ),
+        );
+        switch (transferTypes[i].receiveModeCode) {
+          case '1':
+            if (transferTypes[i].receiveModeName.isNotEmpty) {
+              Universal.receiveMode1Name = transferTypes[i].receiveModeName;
+            }
+            bankCurrencyList.add(
+              CurrenciesModel(
+                currencyCode: transferTypes[i].currencyCode,
+                currencyName: transferTypes[i].currencyName,
+                currencyId: transferTypes[i].currencyId,
+                transferTypeId: transferTypes[i].transferTypeId,
+                transferTypeName: transferTypes[i].transferTypeName,
+                templateId: transferTypes[i].templateId,
+                templateName: transferTypes[i].templateName,
+                receiveModeCode: transferTypes[i].receiveModeCode,
+                receiveModeId: transferTypes[i].receiveModeId,
+                receiveModeName: transferTypes[i].receiveModeName,
+                countryId: transferTypes[i].countryId,
+                countryCode: transferTypes[i].countryCode,
+                countryFlag: transferTypes[i].countryFlag,
+              ),
+            );
+            break;
+          case '2':
+            if (transferTypes[i].receiveModeName.isNotEmpty) {
+              Universal.receiveMode2Name = transferTypes[i].receiveModeName;
+            }
+            cashCurrencyList.add(
+              CurrenciesModel(
+                currencyCode: transferTypes[i].currencyCode,
+                currencyName: transferTypes[i].currencyName,
+                currencyId: transferTypes[i].currencyId,
+                transferTypeId: transferTypes[i].transferTypeId,
+                transferTypeName: transferTypes[i].transferTypeName,
+                templateId: transferTypes[i].templateId,
+                templateName: transferTypes[i].templateName,
+                receiveModeCode: transferTypes[i].receiveModeCode,
+                receiveModeId: transferTypes[i].receiveModeId,
+                receiveModeName: transferTypes[i].receiveModeName,
+                countryId: transferTypes[i].countryId,
+                countryCode: transferTypes[i].countryCode,
+                countryFlag: transferTypes[i].countryFlag,
+              ),
+            );
+            break;
+          case '3':
+            if (transferTypes[i].receiveModeName.isNotEmpty) {
+              Universal.receiveMode3Name = transferTypes[i].receiveModeName;
+            }
+            walletCurrencyList.add(
+              CurrenciesModel(
+                currencyCode: transferTypes[i].currencyCode,
+                currencyName: transferTypes[i].currencyName,
+                currencyId: transferTypes[i].currencyId,
+                transferTypeId: transferTypes[i].transferTypeId,
+                transferTypeName: transferTypes[i].transferTypeName,
+                templateId: transferTypes[i].templateId,
+                templateName: transferTypes[i].templateName,
+                receiveModeCode: transferTypes[i].receiveModeCode,
+                receiveModeId: transferTypes[i].receiveModeId,
+                receiveModeName: transferTypes[i].receiveModeName,
+                countryId: transferTypes[i].countryId,
+                countryCode: transferTypes[i].countryCode,
+                countryFlag: transferTypes[i].countryFlag,
+              ),
+            );
+            break;
+        }
+      }
+
+      final uniqueIds = <String?>{};
+      for (final mode in modesList) {
+        if (!uniqueIds.contains(mode.id)) {
+          uniqueIds.add(mode.id);
+          transferModes.add(mode);
+        }
+      }
+
+      bankCurrencyList.sort((a, b) => a.currencyCode!.compareTo(b.currencyCode!));
+      cashCurrencyList.sort((a, b) => a.currencyCode!.compareTo(b.currencyCode!));
+      walletCurrencyList.sort((a, b) => a.currencyCode!.compareTo(b.currencyCode!));
+
+      Universal.transferModes = transferModes;
+      Universal.bankCurrencyList = bankCurrencyList;
+      Universal.cashCurrencyList = cashCurrencyList;
+      Universal.walletCurrencyList = walletCurrencyList;
+    } on SocketException catch (e) {
+      ConstantException.handleSocketException(error: e);
+    } on TimeoutException catch (e) {
+      ConstantException.handleTimeoutException(error: e);
+    } on GrpcError catch (e) {
+      ConstantException.handleGrpcException(error: e);
+    } catch (e) {
+      ConstantException.handleException(error: e);
+    }
+  }
+
+  List<SelectionModel> _toSelectionList(List<CurrenciesModel> list) {
+    return list
+        .map(
+          (e) => SelectionModel(
+            // Prefer country + currency so the list is unambiguous in the UI.
+            name: _currencyRowLabel(e),
+            code: e.currencyCode,
+            countryId: e.countryId,
+            // Reuse [code2] to carry [countryCode] for selection matching (not shown as second code in UI if title is set).
+            code2: e.countryCode,
+            flagPath:
+                'https://flagcdn.com/w80/${(e.countryCode ?? 'xx').toLowerCase()}.png',
+          ),
+        )
+        .toList();
+  }
+
+  String _currencyRowLabel(CurrenciesModel e) {
+    final cc = (e.countryCode != null && e.countryCode!.trim().isNotEmpty)
+        ? '${e.countryCode} · '
+        : '';
+    return '$cc${e.currencyName ?? e.currencyCode ?? ''}';
+  }
+
+  /// Picks the exact row; many APIs repeat the same [currencyCode] for different [countryId]s.
+  CurrenciesModel? _findInList(
+    List<CurrenciesModel> list,
+    RateCalcSelectCurrEvent e,
+  ) {
+    String norm(String? s) => (s ?? '').trim();
+    final wantCode = norm(e.currencyCode);
+    if (wantCode.isEmpty) return null;
+
+    CurrenciesModel? byCurrencyOnly;
+    for (final c in list) {
+      if (norm(c.currencyCode).toUpperCase() != wantCode.toUpperCase()) continue;
+      byCurrencyOnly ??= c;
+      if (norm(e.countryId).isNotEmpty) {
+        if (norm(c.countryId) == norm(e.countryId)) return c;
+      } else if (norm(e.countryCode).isNotEmpty) {
+        if (norm(c.countryCode).toUpperCase() == norm(e.countryCode).toUpperCase()) {
+          return c;
+        }
+      }
+    }
+    return byCurrencyOnly;
+  }
+
+  List<SelectionModel> _currencyPickerListForCode(String code) {
+    switch (code) {
+      case '1':
+        return _toSelectionList(Universal.bankCurrencyList);
+      case '2':
+        return _toSelectionList(Universal.cashCurrencyList);
+      case '3':
+        return _toSelectionList(Universal.walletCurrencyList);
+      default:
+        return _toSelectionList(Universal.bankCurrencyList);
+    }
   }
 
   Future<void> _onInit(RateCalcInitEvent event, Emitter<RateCalculatorState> emit) async {
-    var transferModes = Universal.transferModes;
-    var currencyList = Universal.bankCurrencyList
-        .map((e) => SelectionModel(
-              name: e.currencyName,
-              code: e.currencyCode,
-              flagPath: "https://flagcdn.com/w80/${e.countryCode!.toLowerCase()}.png",
-            ))
-        .toList();
-    emit(state.copyWith(transferModes: transferModes, currencyList: currencyList));
+    await _loadUniversalFromMaster();
 
-    // Safe selection with null checks
+    final transferModes = Universal.transferModes;
+    final defaultCode = '1';
+    final currencyList = _currencyPickerListForCode(defaultCode);
+
+    emit(
+      state.copyWith(
+        transferModes: transferModes,
+        currencyList: currencyList,
+        selectedModeIndex: 1,
+      ),
+    );
+
     selectedBankCurrency = Universal.bankCurrencyList.isNotEmpty
-        ? Universal.bankCurrencyList.firstWhere((currency) => currency.currencyCode == 'INR',
-            orElse: () => Universal.bankCurrencyList.first)
+        ? Universal.bankCurrencyList.firstWhere(
+            (c) => c.currencyCode == 'INR',
+            orElse: () => Universal.bankCurrencyList.first,
+          )
         : null;
 
     selectedCashCurrency = Universal.cashCurrencyList.isNotEmpty
-        ? Universal.cashCurrencyList.firstWhere((currency) => currency.currencyCode == 'INR',
-            orElse: () => Universal.cashCurrencyList.first)
+        ? Universal.cashCurrencyList.firstWhere(
+            (c) => c.currencyCode == 'INR',
+            orElse: () => Universal.cashCurrencyList.first,
+          )
         : null;
 
     selectedWalletCurrency = Universal.walletCurrencyList.isNotEmpty
-        ? Universal.walletCurrencyList.firstWhere((currency) => currency.currencyCode == 'INR',
-            orElse: () => Universal.walletCurrencyList.first)
+        ? Universal.walletCurrencyList.firstWhere(
+            (c) => c.currencyCode == 'INR',
+            orElse: () => Universal.walletCurrencyList.first,
+          )
         : null;
 
     if (selectedBankCurrency != null) {
-      add(RateCalcSelectCurrEvent(selectedBankCurrency!.currencyCode ?? ''));
+      add(
+        RateCalcSelectCurrEvent(
+          selectedBankCurrency!.currencyCode ?? '',
+          countryId: selectedBankCurrency!.countryId,
+          countryCode: selectedBankCurrency!.countryCode,
+        ),
+      );
     }
   }
 
@@ -339,41 +540,48 @@ class RateCalculatorBloc extends Bloc<RateCalculatorEvent, RateCalculatorState> 
   }
 
   Future<void> _onCurrSelect(RateCalcSelectCurrEvent event, Emitter<RateCalculatorState> emit) async {
-    var currency;
+    CurrenciesModel? currency;
     // RateCalculatorController.lcAmountController.clear();
     // RateCalculatorController.fcAmountController.clear();
     if (state.selectedModeIndex == 1) {
-      // Bank mode selected
-      currency =
-          Universal.bankCurrencyList.firstWhere((element) => element.currencyCode == event.currencyCode);
-      selectedBankCurrency = currency;
+      currency = _findInList(Universal.bankCurrencyList, event);
+      if (currency != null) {
+        selectedBankCurrency = currency;
+      }
+    } else if (state.selectedModeIndex == 2) {
+      currency = _findInList(Universal.cashCurrencyList, event);
+      if (currency != null) {
+        selectedCashCurrency = currency;
+      }
+    } else if (state.selectedModeIndex == 3) {
+      currency = _findInList(Universal.walletCurrencyList, event);
+      if (currency != null) {
+        selectedWalletCurrency = currency;
+      }
     }
-    if (state.selectedModeIndex == 2) {
-      // Cash mode selected
-      currency =
-          Universal.cashCurrencyList.firstWhere((element) => element.currencyCode == event.currencyCode);
-      selectedCashCurrency = currency;
+    if (currency == null) {
+      emit(
+        state.copyWith(
+          isRateLoading: false,
+        ),
+      );
+      return;
     }
-    if (state.selectedModeIndex == 3) {
-      // Wallet mode selected
-      currency = Universal.walletCurrencyList
-          .firstWhere((element) => element.currencyCode == event.currencyCode);
-      selectedWalletCurrency = currency;
-    }
+    final picked = currency;
     emit(state.copyWith(
-      selectedFcCode: currency?.currencyCode ?? '',
-      selectedFcCountryCode: currency?.countryCode ?? '',
-      fcFlag: currency?.countryFlag ?? '',
+      selectedFcCode: picked.currencyCode ?? '',
+      selectedFcCountryCode: picked.countryCode ?? '',
+      fcFlag: picked.countryFlag ?? '',
       isRateLoading: true,
     ));
     var res = await getOnlineRateByTemplateCountryAndTransferType(
-      currency?.currencyId ?? '',
-      currency?.transferTypeId ?? '',
-      currency?.templateId ?? '',
-      currency?.templateName ?? '',
-      currency?.receiveModeCode ?? '',
-      currency?.receiveModeName ?? '',
-      currency?.countryId ?? '',
+      picked.currencyId ?? '',
+      picked.transferTypeId ?? '',
+      picked.templateId ?? '',
+      picked.templateName ?? '',
+      picked.receiveModeCode ?? '',
+      picked.receiveModeName ?? '',
+      picked.countryId ?? '',
     );
     selectedCurrRate = res?.userRate.isZero ?? true ? 0.0 : 1 / double.parse(res!.userRate);
     emit(state.copyWith(rate: selectedCurrRate.toStringAsFixed(2), isRateLoading: false));

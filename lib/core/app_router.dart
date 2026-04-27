@@ -9,6 +9,7 @@ import 'package:lari_exchange/presentation/home/main_shell.dart';
 import 'package:lari_exchange/presentation/home/tabs/home_tab.dart';
 import 'package:lari_exchange/presentation/home/tabs/profile_tab.dart';
 import 'package:lari_exchange/presentation/home/tabs/wallet_tab.dart';
+import 'package:lari_exchange/presentation/rate_calculator/rate_calculator.dart';
 
 abstract final class AppRoutePaths {
   AppRoutePaths._();
@@ -21,6 +22,7 @@ abstract final class AppRoutePaths {
   static const profile = '/profile';
   static const history = '/history';
   static const benlisting = '/benlisting';
+  static const rateCalculator = '/rate-calculator';
 }
 
 abstract final class AppRouteNames {
@@ -34,6 +36,7 @@ abstract final class AppRouteNames {
   static const profile = 'profile';
   static const history = 'history';
   static const benlisting = 'benlisting';
+  static const rateCalculator = 'rateCalculator';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -66,6 +69,13 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutePaths.benlisting,
       name: AppRouteNames.benlisting,
       builder: (context, state) => const BenListing(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.rateCalculator,
+      name: AppRouteNames.rateCalculator,
+      builder: (BuildContext context, GoRouterState state) {
+        return const RateCalculatorScreen();
+      },
     ),
     StatefulShellRoute.indexedStack(
       builder:

@@ -13,7 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:grpc/grpc.dart';
-import 'package:lari_exchange/application/rate_calculator/rate_calculator_bloc.dart';
+
 
 import 'package:lari_exchange/domain/user/model/user.pb.dart';
 import 'package:lari_exchange/infrastructure/master/master_repository.dart';
@@ -276,7 +276,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       ConstantException.handleException(error: e);
     }
-    event.context.read<RateCalculatorBloc>().add(RateCalcInitEvent());
   }
 
   Future<void> _handleDpDownload(HomeImageDownloadEvent event, Emitter<HomeState> emit) async {

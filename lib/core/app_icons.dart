@@ -4,7 +4,7 @@ class AppIcons {
   static const String larilogoimage = 'assets/icons/lari_big_right.png';
   static const String logo = 'assets/icons/logo-small_bg.svg';
   static const String laribanner = 'assets/images/home_banner.png';
-  static const String laribanner2 = 'assets/images/29_1.jpg';
+  static const String laribanner2 = 'assets/images/35_1.jpg';
   static const String laribanner3 = 'assets/images/29_1 (1).jpg';
   static const String rupeesymbol = 'assets/icons/rupee-symbol (1).svg';
   static const String riyalsymbol = 'assets/icons/riyal.svg';
@@ -20,7 +20,7 @@ class AppIcons {
   static const String errorStateIllustration = 'assets/icons/error_state.svg';
   static const String corporateIcon = 'assets/icons/company.svg';
   static const String profilebaground ='assets/icons/ChatGPT Image Apr 24, 2026, 04_40_02 PM.svg';
-  static const String bangroundlogin='assets/images/ChatGPT Image Apr 26, 2026, 09_38_30 AM.png';
+  static const String bangroundlogin='assets/images/ChatGPT Image Apr 27, 2026, 10_39_48 AM.png';
 
   // Profile screen icons (consistent stroked set, currentColor)
   static const String profileBell = 'assets/icons/profile/bell.svg';
@@ -50,7 +50,7 @@ class AppIcons {
     final w = (MediaQuery.sizeOf(context).width * dpr).round();
     final h = (walletBannerHeight * dpr).round();
     return ResizeImage(
-      AssetImage(laribanner),
+      AssetImage(laribanner2),
       width: w,
       height: h,
       allowUpscaling: false,

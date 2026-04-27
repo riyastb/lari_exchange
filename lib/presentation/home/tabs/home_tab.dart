@@ -110,9 +110,10 @@ class HomeTab extends StatelessWidget {
                           label: 'Transactions & History',
                         ),
                         kWidth10,
-                        const CustomPillRow(
+                        CustomPillRow(
                           icon: Icons.calculate_outlined,
                           label: 'Rate Calculator',
+                          ontap: () => context.push(AppRoutePaths.rateCalculator),
                         ),
                         kWidth10,
                         CustomPillRow(
