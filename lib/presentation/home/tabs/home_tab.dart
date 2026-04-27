@@ -304,26 +304,39 @@ class HomeTab extends StatelessWidget {
                         ),
                       ),
                       kHeight40,
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Row(
-                          children: [
-                            if (useFlatUsers)
-                              for (final u in corporateUsers.take(4))
-                                Expanded(
-                                  child: CorporateServiceTile(
-                                    name: _corporateUserDisplayLabel(u),
-                                    detail: _corporateUserDetail(u),
-                                  ),
-                                )
-                            else
-                              for (final branch in branches.take(4))
-                                Expanded(
-                                  child: CorporateServiceTile(
-                                    name: _branchDisplayLabel(branch),
-                                  ),
+                      SizedBox(
+                        height: 160,
+                        child: ListView.separated(
+                          primary: false,
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          itemCount: useFlatUsers
+                              ? corporateUsers.length
+                              : branches.length,
+                          separatorBuilder: (_, __) => const SizedBox(width: 12),
+                          itemBuilder: (context, i) {
+                            if (useFlatUsers) {
+                              final u = corporateUsers[i];
+                              return SizedBox(
+                                width: 132,
+                             
+                                child: CorporateServiceTile(
+                                  name: _corporateUserDisplayLabel(u),
+                                  branch: _corporateUserDetail(u),
+                                  status: _corporateUserMohreStatus(u),
+                                  companyId: _corporateUserCompanyId(u),
                                 ),
-                          ],
+                              );
+                            }
+                            final branch = branches[i];
+                            return SizedBox(
+                              width: 132,
+                              child: CorporateServiceTile(
+                                name: _branchDisplayLabel(branch),
+                              ),
+                            );
+                          },
                         ),
                       ),
                       kHeight40,
@@ -425,10 +438,22 @@ String _corporateUserDisplayLabel(user.CorporateBranchUsers u) {
   return 'Business';
 }
 
-/// Secondary line under the name (e.g. API `transactionPin` — branch / channel).
+
 String? _corporateUserDetail(user.CorporateBranchUsers u) {
   final t = u.transactionPin.trim();
   if (t.isNotEmpty) return t;
+  return null;
+}
+
+String? _corporateUserMohreStatus(user.CorporateBranchUsers u) {
+  final s = u.mohreRegistrationStatus.trim();
+  if (s.isNotEmpty) return s;
+  return null;
+}
+
+String? _corporateUserCompanyId(user.CorporateBranchUsers u) {
+  final c = u.mohreCompanyCode.trim();
+  if (c.isNotEmpty) return c;
   return null;
 }
 
