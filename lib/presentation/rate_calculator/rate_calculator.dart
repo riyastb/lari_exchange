@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/application/rate_calculator/rate_calculator_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
@@ -76,15 +75,23 @@ class _RateCalculatorState extends State<RateCalculator> {
   }
 
   Widget buildRateModeSelector(RateCalculatorState state) {
-   
-    const order = <String>['1', '2', '3'];
-    final tabs = <Widget>[];
-    for (final code in order) {
-      final mode = _paymentModeById(state.transferModes, code);
-      if (mode != null) {
-        tabs.add(_buildTabForMode(context, mode));
+    /// Match API [PaymentModesModel.name] with keywords; labels are fixed for UI.
+    Widget? buildTabFromMode(String keyword, String label) {
+      final mode = state.transferModes.firstWhere(
+        (e) => e.name?.toLowerCase().contains(keyword) ?? false,
+        orElse: () => PaymentModesModel(id: '0', name: ''),
+      );
+      if (mode.id == null || mode.id!.isEmpty || mode.id == '0') {
+        return null;
       }
+      return _buildTabForMode(context, mode, displayLabel: label);
     }
+
+    final tabs = [
+      buildTabFromMode('bank', 'BANK TRANSFER'),
+      buildTabFromMode('cash', 'CASH PICKUP'),
+      buildTabFromMode('mobile', 'MOBILE WALLET'),
+    ].whereType<Widget>().toList();
 
     if (tabs.isEmpty) {
       return const SizedBox.shrink();
@@ -576,16 +583,6 @@ class _RateCalculatorState extends State<RateCalculator> {
     );
   }
 
-  PaymentModesModel? _paymentModeById(
-    List<PaymentModesModel> modes,
-    String id,
-  ) {
-    for (final m in modes) {
-      if (m.id == id) return m;
-    }
-    return null;
-  }
-
   void _openCurrencySearchSheet(
     BuildContext context,
     List<SelectionModel> list,
@@ -674,17 +671,23 @@ class _RateCalculatorState extends State<RateCalculator> {
     );
   }
 
-  Widget _buildTabForMode(BuildContext context, PaymentModesModel mode) {
+  Widget _buildTabForMode(
+    BuildContext context,
+    PaymentModesModel mode, {
+    String? displayLabel,
+  }) {
     final code = mode.id ?? '1';
     final modeIndex = int.tryParse(code) ?? 1;
-    final label = (mode.name != null && mode.name!.trim().isNotEmpty)
-        ? mode.name!
-        : switch (code) {
-            '1' => 'BANK',
-            '2' => 'CASH',
-            '3' => 'WALLET',
-            _ => code,
-          };
+    final label = (displayLabel != null && displayLabel.trim().isNotEmpty)
+        ? displayLabel
+        : ((mode.name != null && mode.name!.trim().isNotEmpty)
+            ? mode.name!
+            : switch (code) {
+                '1' => 'BANK TRANSFER',
+                '2' => 'CASH PICKUP',
+                '3' => 'MOBILE WALLET',
+                _ => code,
+              });
 
     return BlocBuilder<RateCalculatorBloc, RateCalculatorState>(
       builder: (context, state) {

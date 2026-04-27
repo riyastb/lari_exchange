@@ -4,11 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lari_exchange/application/beneficiary_listing/beneficiary_listing_bloc.dart';
+import 'package:lari_exchange/application/sign_in/sign_in_bloc.dart';
 import 'package:lari_exchange/core/app_colors.dart';
 import 'package:lari_exchange/core/app_constants.dart';
 import 'package:lari_exchange/core/app_icons.dart';
 import 'package:lari_exchange/core/app_router.dart';
+import 'package:lari_exchange/domain/user/model/user.pb.dart' as user;
 import 'package:lari_exchange/presentation/home/widgets/ben_home_listing.dart';
+import 'package:lari_exchange/presentation/home/widgets/corporate_service_tile.dart';
 import 'package:lari_exchange/presentation/home/widgets/home_profile_avatar.dart';
 import 'package:lari_exchange/presentation/widgets/custom_circle_icon_tile.dart';
 import 'package:lari_exchange/presentation/widgets/custom_icon_tile.dart';
@@ -280,28 +283,54 @@ class HomeTab extends StatelessWidget {
                 ),
               ),
 
-              kHeight30,
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: CustomSectionHeader(
-                  title: 'Business & Services',
-                  actionLabel: 'Explore',
-                ),
+              BlocSelector<SignInBloc, SignInState, List<user.BranchUsers>>(
+                selector: (state) => state.corporateBranchList,
+                builder: (context, branches) {
+                  if (branches.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  final corporateUsers = _allCorporateUsersFrom(branches);
+                  final useFlatUsers = corporateUsers.isNotEmpty;
+                  return Column(
+                    key: const ValueKey('business_services'),
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      kHeight30,
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24),
+                        child: CustomSectionHeader(
+                          title: 'Business & Services',
+                          actionLabel: 'Explore',
+                        ),
+                      ),
+                      kHeight40,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Row(
+                          children: [
+                            if (useFlatUsers)
+                              for (final u in corporateUsers.take(4))
+                                Expanded(
+                                  child: CorporateServiceTile(
+                                    name: _corporateUserDisplayLabel(u),
+                                    detail: _corporateUserDetail(u),
+                                  ),
+                                )
+                            else
+                              for (final branch in branches.take(4))
+                                Expanded(
+                                  child: CorporateServiceTile(
+                                    name: _branchDisplayLabel(branch),
+                                  ),
+                                ),
+                          ],
+                        ),
+                      ),
+                      kHeight40,
+                    ],
+                  );
+                },
               ),
-              kHeight40,
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  children: [
-                    CustomCircleIconTile(
-                      svgAsset: AppIcons.corporateIcon,
-                      label: 'Wonderland',
-                    ),
-                  ],
-                ),
-              ),
-              kHeight40,
 
               // const Padding(
               //   padding: EdgeInsets.symmetric(horizontal: 24),
@@ -377,4 +406,40 @@ class HomeTab extends StatelessWidget {
       ),
     );
   }
+}
+
+
+List<user.CorporateBranchUsers> _allCorporateUsersFrom(
+  List<user.BranchUsers> branches,
+) {
+  final out = <user.CorporateBranchUsers>[];
+  for (final b in branches) {
+    out.addAll(b.corporateBranchUsers);
+  }
+  return out;
+}
+
+String _corporateUserDisplayLabel(user.CorporateBranchUsers u) {
+  final n = u.name.trim();
+  if (n.isNotEmpty) return n;
+  return 'Business';
+}
+
+/// Secondary line under the name (e.g. API `transactionPin` — branch / channel).
+String? _corporateUserDetail(user.CorporateBranchUsers u) {
+  final t = u.transactionPin.trim();
+  if (t.isNotEmpty) return t;
+  return null;
+}
+
+String _branchDisplayLabel(user.BranchUsers b) {
+  for (final u in b.corporateBranchUsers) {
+    final n = u.name.trim();
+    if (n.isNotEmpty) return n;
+  }
+  if (b.hasCorporateBranch()) {
+    final name = b.corporateBranch.branchName.trim();
+    if (name.isNotEmpty) return name;
+  }
+  return 'Business';
 }

@@ -28,6 +28,7 @@ import 'package:lari_exchange/core/app_universal.dart';
 import 'package:lari_exchange/domain/user/model/user.pb.dart' as user;
 
 import 'package:lari_exchange/infrastructure/user/user_repository.dart';
+import 'package:lari_exchange/infrastructure/userprime/userPrime_repo.dart';
 // import 'package:lari_exchange/infrastructure/userprime/userPrime_repo.dart';
 // import 'package:lari_exchange/infrastructure/master/master_repository.dart';
 import 'package:lari_exchange/presentation/auth/controller/login_controller.dart';
@@ -72,7 +73,7 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   static const Duration _requestTimeout = Duration(seconds: 30);
 
   UserRepository userRepo = UserRepository();
-  // UserprimeRepo userPrimeRepo = UserprimeRepo();
+  UserprimeRepo userPrimeRepo = UserprimeRepo();
   // MasterRepository masterRepository = MasterRepository();
   // ThemeBloc themeNavigator = ThemeBloc();
   // MasterBloc masterBloc = MasterBloc();
@@ -535,45 +536,45 @@ static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
         return;
       }
 
-      final corporateResponse;
-      //  = await _runWithTimeout(
-      //   () => userPrimeRepo.getCorporateBranchAndUsers(
-      //     userRef: Universal.userPayload.iDNumber,
-      //     type: 'FETCH_CORPORATES_UNDER_BRANCHUSERS',
-      //   ),
-      // );
+      final corporateResponse
+       = await _runWithTimeout(
+        () => userPrimeRepo.getCorporateBranchAndUsers(
+          userRef: Universal.userPayload.iDNumber,
+          type: 'FETCH_CORPORATES_UNDER_BRANCHUSERS',
+        ),
+      );
 
-     // if (corporateResponse == null) return;
+     if (corporateResponse == null) return;
 
-      // debugPrint(
-      //     '🔑 [SignInBloc] Corporate API response result: ${corporateResponse.result}');
-      // debugPrint(
-      //     '🔑 [SignInBloc] Corporate branchUsers count: ${corporateResponse.branchUsers.length}');
+      debugPrint(
+          '🔑 [SignInBloc] Corporate API response result: ${corporateResponse.result}');
+      debugPrint(
+          '🔑 [SignInBloc] Corporate branchUsers count: ${corporateResponse.branchUsers.length}');
 
-     // if (corporateResponse.branchUsers.isNotEmpty) {
-        // Universal.isCorporateUser = true;
-        // Universal.corporateBranchList = corporateResponse.branchUsers;
-        // emit(state.copyWith(
-        //   corporateBranchList: corporateResponse.branchUsers,
-        //   isCorporateUser: true,
-        // ));
-        // Logger().w('corp user : ${Universal.isCorporateUser}');
-        // debugPrint(
-        //     '🔑 [SignInBloc] ✅ User HAS corporate accounts (${corporateResponse.branchUsers.length})');
-        // for (var branch in corporateResponse.branchUsers) {
-        //   debugPrint(
-        //       '🔑 [SignInBloc]   → Branch: ${branch.corporateBranch.branchName}');
-        //   for (var user in branch.corporateBranchUsers) {
-        //     debugPrint(
-        //         '🔑 [SignInBloc]     → id=${user.id}, name=${user.name}, branchCode(loginOTP)=${user.loginOTP}, branchName(transactionPin)=${user.transactionPin}');
-        //   }
-        // }
-      // } else {
-      //   Universal.isCorporateUser = false;
-      //   Universal.corporateBranchList = [];
-      //   emit(state.copyWith(corporateBranchList: [], isCorporateUser: false));
-      //   debugPrint('🔑 [SignInBloc] ❌ User has NO corporate accounts');
-      // }
+     if (corporateResponse.branchUsers.isNotEmpty) {
+        Universal.isCorporateUser = true;
+        Universal.corporateBranchList = corporateResponse.branchUsers;
+        emit(state.copyWith(
+          corporateBranchList: corporateResponse.branchUsers,
+          isCorporateUser: true,
+        ));
+        Logger().w('corp user : ${Universal.isCorporateUser}');
+        debugPrint(
+            '🔑 [SignInBloc] ✅ User HAS corporate accounts (${corporateResponse.branchUsers.length})');
+        for (var branch in corporateResponse.branchUsers) {
+          debugPrint(
+              '🔑 [SignInBloc]   → Branch: ${branch.corporateBranch.branchName}');
+          for (var user in branch.corporateBranchUsers) {
+            debugPrint(
+                '🔑 [SignInBloc]     → id=${user.id}, name=${user.name}, branchCode(loginOTP)=${user.loginOTP}, branchName(transactionPin)=${user.transactionPin}');
+          }
+        }
+      } else {
+        Universal.isCorporateUser = false;
+        Universal.corporateBranchList = [];
+        emit(state.copyWith(corporateBranchList: [], isCorporateUser: false));
+        debugPrint('🔑 [SignInBloc] ❌ User has NO corporate accounts');
+      }
     } catch (e) {
       debugPrint('🔑 [SignInBloc] ⚠️ Error fetching corporate accounts: $e');
       Universal.isCorporateUser = false;
